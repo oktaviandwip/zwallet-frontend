@@ -9,8 +9,8 @@ function Header() {
     setShowBellNotif(!showBellNotif);
   };
   return (
-    <header className="bg-white container py-4">
-      <div className=" mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <header className="bg-white  py-4">
+      <div className="container mx-auto  px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="hidden sm:flex items-center justify-center sm:justify-start">
             <h1 className="text-primary px-3 text-[29px]">Zwallet</h1>
