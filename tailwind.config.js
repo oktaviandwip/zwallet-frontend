@@ -5,13 +5,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#",
+        primary: "#6379F4",
         secondary: "#",
       },
       backgroundImage: {},
       boxShadow: {
         "shadow-blur": "inset 0 0 0 2000px rgba(27, 27, 27, 0.5)",
       },
+      fontFamily: {
+        'nunito': ['"Nunito Sans"', 'sans-serif']
+      }
     },
     container: {
       center: true,
