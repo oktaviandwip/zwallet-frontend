@@ -4,9 +4,10 @@ import iconEmail from '../../assets/icons/mail.svg'
 import iconLock from '../../assets/icons/lock.svg'
 import iconEyeCrossed from '../../assets/icons/eye-crossed.png'
 import iconEye from '../../assets/icons/icon-eye.svg'
+import iconPerson from '../../assets/icons/person.png'
 import '../../custom-css/login.css'
 
-function Login(){
+function SignUp () {
     return (
         <main className="flex flex-row w-screen overflow-y-hidden font-nunito">
             <section className="jumbotron w-full md:w-1/2 h-screen flex flex-col px-20 py-12 bg-primary/[0.2] md:bg-primary overflow-y-hidden">
@@ -22,7 +23,7 @@ function Login(){
                 </p>
             </section>
             <section className="absolute top-[25%] md:static md:w-1/2 h-screen flex flex-col rounded-[20px] md:rounded-none gap-y-7 px-5 md:px-12 py-12 bg-white">
-                <h2 className="md:hidden self-center text-2xl font-bold text-[#3A3D42]">Login</h2>
+                <h2 className="md:hidden self-center text-2xl font-bold text-[#3A3D42]">Sign Up</h2>
                 <h2 className="hidden md:flex w-[60%] text-2xl font-bold text-[#3A3D42] leading-normal">Start Accessing Banking Needs
                     With All Devices and All Platforms
                     With 30.000+ Users
@@ -33,6 +34,12 @@ function Login(){
                 </p>
                 <p className="md:hidden w-[100%] text-center text-[#3A3D4299] text-base leading-loose">Login to your existing account to access all the features in Zwallet.</p>
                 <form className="md:w-[75%] flex flex-col gap-y-5" action="">
+                    <div className="flex flex-row border-b-[1.5px] border-[#A9A9A999] py-2 mt-5">
+                        <div className="w-[12%] md:w-[8%]">
+                            <img src={iconPerson} alt="" />
+                        </div>
+                        <input className="w-[100%] outline-none"  type="mail" name="email" required placeholder="Enter your username" />
+                    </div>
                     <div className="flex flex-row border-b-[1.5px] border-[#A9A9A999] py-2 mt-5">
                         <div className="w-[12%] md:w-[8%]">
                             <img src={iconEmail} alt="" />
@@ -48,13 +55,12 @@ function Login(){
                             <img src={iconEyeCrossed} alt="" />
                         </button>
                     </div>
-                    <a className="self-end" href="">Forgot password?</a>
-                    <button className="bg-[#88888f3f] hover:bg-primary hover:text-white text-[#88888F] rounded-[8px] p-4 mt-10" type="submit">Login</button>
-                    <span className="self-center mt-4">Don’t have an account? Let’s <a className="text-primary" href="">Sign Up</a></span>
+                    <button className="bg-[#88888f3f] hover:bg-primary hover:text-white text-[#88888F] rounded-[8px] p-4 mt-10" type="submit">Sign Up</button>
+                    <span className="self-center mt-4">Already have an account? Let’s <a className="text-primary" href="">Login</a></span>
                 </form>
             </section>
         </main>
     )
 }
 
-export default Login;
+export default SignUp;
