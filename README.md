@@ -63,7 +63,6 @@ npm run dev
 ---
 
 <br/>
-<hr>
 
 ## Website Interface
 
