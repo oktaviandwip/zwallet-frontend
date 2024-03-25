@@ -8,7 +8,9 @@ export default {
         primary: "#6379F4",
         secondary: "#",
       },
-      backgroundImage: {},
+      backgroundImage: {
+        'hero-side': "url('/src/assets/images/Mask Group.png')",
+      },
       boxShadow: {
         "shadow-blur": "inset 0 0 0 2000px rgba(27, 27, 27, 0.5)",
       },

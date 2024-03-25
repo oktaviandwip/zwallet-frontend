@@ -10,7 +10,7 @@ import '../../custom-css/login.css'
 function SignUp () {
     return (
         <main className="flex flex-row w-screen overflow-y-hidden font-nunito">
-            <section className="jumbotron w-full md:w-1/2 h-screen flex flex-col px-20 py-12 bg-primary/[0.2] md:bg-primary overflow-y-hidden">
+            <section className='jumbotron w-full md:w-1/2 h-screen flex flex-col px-20 py-12 bg-primary/[0.2] md:bg-hero-side bg-cover bg-no-repeat overflow-y-hidden'>
                 <a className="self-center md:self-start text-primary md:text-white text-[29px] font-bold" href="/">Zwallet</a>
                 <div className="hidden md:block md:pl-16">
                     <img className="w-[100%] max-w-[385px] h-auto " src={imageGroup} alt="image hero" />
@@ -32,7 +32,7 @@ function SignUp () {
                     Transfering money is eassier than ever, you can access Zwallet wherever 
                     you are. Desktop, laptop, mobile phone? we cover all of that for you!
                 </p>
-                <p className="md:hidden w-[100%] text-center text-[#3A3D4299] text-base leading-loose">Login to your existing account to access all the features in Zwallet.</p>
+                <p className="md:hidden w-[100%] text-center text-[#3A3D4299] text-base leading-loose">Create your account to access Zwallet.</p>
                 <form className="md:w-[75%] flex flex-col gap-y-5" action="">
                     <div className="flex flex-row border-b-[1.5px] border-[#A9A9A999] py-2 mt-5">
                         <div className="w-[12%] md:w-[8%]">
