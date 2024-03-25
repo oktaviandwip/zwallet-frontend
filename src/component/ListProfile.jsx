@@ -12,7 +12,7 @@ export default function ListProfile({ content }) {
         navigate("/profile/change-pass");
         break;
       case "Change PIN":
-        navigate("/");
+        navigate("/profile/change-pin");
         break;
       //   case "Logout":
       //     axiosClient.post("auth/logout");

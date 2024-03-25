@@ -4,6 +4,7 @@ import Home from "../pages/dashboard/Home.jsx";
 import Topup from "../pages/topup/Topup.jsx";
 import Profile from "../pages/profile/Profile.jsx";
 import Detail from "../pages/profile/Detail.jsx";
+import ChangePin from "../pages/profile/ChangePin.jsx";
 import ChangePass from "../pages/profile/ChangePass.jsx";
 import AddPhone from "../pages/profile/AddPhone.jsx";
 import ManagePhone from "../pages/profile/ManagePhone.jsx";
@@ -31,7 +32,7 @@ export default createBrowserRouter([
   },
   {
     path: "/profile/change-pin",
-    element: <Profile />,
+    element: <ChangePin />,
   },
   {
     path: "/profile/change-pass",
