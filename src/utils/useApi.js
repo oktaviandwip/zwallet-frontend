@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 function useApi(urls = "") {
-  const { token } = useSelector((s) => s.users);
+  // const { token } = useSelector((s) => s.users);
+  const token = true;
 
   const [requests, setRequests] = useState({
     baseURL: "http://localhost:3001",
     // baseURL: import.meta.env.VITE_APP_BASEURL || urls,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExMzcxOTMzLCJleHAiOjE3MTE0NTgzMzN9.72NZq1KmBhP1jJEW_wXlak-LadNnpr4_ObmtYMxdsu8`,
     },
   });
 
@@ -19,7 +20,7 @@ function useApi(urls = "") {
       ...requests,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExMzcxOTMzLCJleHAiOjE3MTE0NTgzMzN9.72NZq1KmBhP1jJEW_wXlak-LadNnpr4_ObmtYMxdsu8`,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

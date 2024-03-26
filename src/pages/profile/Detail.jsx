@@ -4,11 +4,13 @@ import Header from "../../component/Header";
 import Sidebar from "../../component/Sidebar";
 import Card from "../../component/CardProfile";
 import MainHeader from "../../component/ProfileHead";
-
+import { useSelector } from "react-redux";
 import defaultProfile from "../../assets/profile-default.png";
+import { useNavigate, Link } from "react-router-dom";
 
 function Home() {
-  const [user, setUser] = useState(true);
+  let navigate = useNavigate();
+  const { profile } = useSelector((s) => s.profile);
   return (
     <div className="">
       <Header />
@@ -23,18 +25,42 @@ function Home() {
           />
 
           <div className="mt-10 grid gap-y-5">
-            <Card title={"First Name"} content="{user.firstName}" />
-            <Card title={"Last Name"} content="{user.lastName}" />
+            <Card
+              title={"First Name"}
+              content={profile.username.split(" ")[0]}
+            />
+            <Card
+              title={"Last Name"}
+              content={profile.username.split(" ")[1]}
+            />
             <Card
               title={"Verified Email"}
-              content="{user.email}"
+              content={profile.email}
               email={true}
             />
-            <Card
-              title={"Phone Number"}
-              content={user.noTelp ? user.noTelp : "Phone Not Set"}
-              phone={true}
-            />
+            <div className="shadow-md rounded-lg p-4 flex justify-between items-center">
+              <div>
+                <h3 className="text-[#7A7886] mb-2">Phone Number</h3>
+                <p className="text-[#514F5B] font-semibold text-xl">
+                  {profile.phone ? profile.phone : "Phone Not Set"}
+                </p>
+              </div>
+              {profile.phone ? (
+                <button
+                  className="text-primary font-medium"
+                  onClick={() => navigate("/profile/manage-phone")}
+                >
+                  Manage
+                </button>
+              ) : (
+                <button
+                  className="text-primary font-medium"
+                  onClick={() => navigate("/profile/add-phone")}
+                >
+                  Add Phone
+                </button>
+              )}
+            </div>
           </div>
         </main>
       </section>

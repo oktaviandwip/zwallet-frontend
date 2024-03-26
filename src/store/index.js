@@ -11,7 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./reducer/user";
-import paginationReducer from "./reducer/pagination";
+import profileReducer from "./reducer/profile";
 
 const persistConfig = {
   key: "root",
@@ -20,7 +20,7 @@ const persistConfig = {
 
 const reducers = combineReducers({
   users: userReducer,
-  pagination: paginationReducer,
+  profile: profileReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

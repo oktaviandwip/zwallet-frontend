@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-
+import useApi from "../../utils/useApi";
+import { useNavigate } from "react-router-dom";
 import MainHeader from "../../component/ProfileHead";
 import Card from "../../component/CardProfile";
 
@@ -10,16 +11,33 @@ import Input from "../../component/Input";
 import Button from "../../component/Button";
 
 export default function ChangePass() {
-  const [user, setUser] = useState(true);
-  const [form, setForm] = useState({});
-
+  let navigate = useNavigate();
   //   const user = useSelector((state) => state.user.data);
+  const api = useApi();
 
+  const [inputPhone, setInputPhone] = useState("");
   const handleOnChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setInputPhone(e.target.value);
   };
 
-  console.log(form);
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    const data = { phone_number: inputPhone };
+    console.log(data);
+
+    api
+      .post("phone", data)
+      .then((res) => {
+        alert(res.data.message);
+        navigate("/profile/detail");
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+        console.log(err.response.data);
+      });
+  };
+
   return (
     <div className="">
       <Header />
@@ -37,7 +55,7 @@ export default function ChangePass() {
           <form
             action=""
             className="w-full sm:w-[431px] mx-auto text-center space-y-5 mt-24"
-            // onSubmit={handleSubmit}
+            onSubmit={submitHandler}
           >
             <Input
               id={"noTelp"}
@@ -50,7 +68,7 @@ export default function ChangePass() {
 
             <Button
               content={"Add Phone Number"}
-              disable={Object.keys(form).length < 1 ? true : false}
+              disable={inputPhone.length < 8 ? true : false}
             />
           </form>
         </main>

@@ -68,7 +68,7 @@ export default function ChangePass() {
 
         <main className="bg-white w-full rounded-3xl shadow-lg px-7 pt-7 pb-20">
           <MainHeader
-            title={"Change Password"}
+            title={"Change Pin"}
             content={
               "You must enter your current password and then type your new password twice."
             }
