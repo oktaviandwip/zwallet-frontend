@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Header from "../../component/Header";
 import Sidebar from "../../component/Sidebar";
 import Footer from "../../component/Footer";
@@ -11,11 +10,6 @@ import topUpIcon from "../../assets/top-up-icon.svg";
 import topUpIconPurple from "../../assets/top-up-icon-purple.svg";
 import incomeIcon from "../../assets/income-icon.svg";
 import expenseIcon from "../../assets/expense-icon.svg";
-
-import samuel from "../../assets/samuel.svg";
-import netflix from "../../assets/netflix.svg";
-import christine from "../../assets/christine.svg";
-import adobe from "../../assets/adobe.svg";
 import backArrow from "../../assets/back-arrow-transaction.svg";
 
 import { Chart } from "chart.js/auto";
@@ -31,21 +25,22 @@ function Home() {
   const { id } = jwtDecode(token);
   const api = useApi();
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [detailTrans, setDetailTrans] = useState(false);
   const [balance, setBalance] = useState([]);
   const [dailyBalance, setDailyBalance] = useState([]);
   const [phone_number, setPhoneNumber] = useState();
   const [hist, setHist] = useState([]);
 
   // Window Screen
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
-      if (windowWidth >= 900) {
+      if (window.innerWidth > 900) {
         setDetailTrans(false);
       }
     };
+
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -101,9 +96,6 @@ function Home() {
         console.log(err);
       });
   }, []);
-
-  // Detail Transaction
-  const [detailTrans, setDetailTrans] = useState(false);
 
   // Get Seven Dates
   function getLastSevenDays() {

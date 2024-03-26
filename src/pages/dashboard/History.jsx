@@ -1,17 +1,16 @@
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import Header from "../../component/Header";
 import Sidebar from "../../component/Sidebar";
 import Footer from "../../component/Footer";
 import History from "../../component/History";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import samuel from "../../assets/samuel.svg";
-import netflix from "../../assets/netflix.svg";
-import christine from "../../assets/christine.svg";
-import adobe from "../../assets/adobe.svg";
+
 import backArrow from "../../assets/back-arrow-transaction.svg";
 import incomeIcon from "../../assets/income-icon.svg";
 import expenseIcon from "../../assets/expense-icon.svg";
 import arrowClicked from "../../assets/white-arrow.svg";
+
 import { DateRangePicker } from "rsuite";
 import { jwtDecode } from "jwt-decode";
 import useApi from "../../utils/useApi.js";
@@ -254,6 +253,7 @@ const HistoryPage = () => {
       });
   }, [dateRange]);
 
+  // Format Date Range
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { day: "numeric", month: "short", year: "numeric" };
@@ -395,6 +395,7 @@ const HistoryPage = () => {
                     format="dd/MM/yyyy"
                     onChange={(date) => {
                       handleDateRange(date);
+                      setButtonClicked(false);
                     }}
                     placement="topEnd"
                     showHeader={false}
