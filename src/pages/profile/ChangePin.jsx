@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 
 import MainHeader from "../../component/ProfileHead";
 import Card from "../../component/CardProfile";
-
+import useApi from "../../utils/useApi";
 // import { useSelector } from "react-redux";
 import Header from "../../component/Header";
 import Sidebar from "../../component/Sidebar";
-import Input from "../../component/Input";
-import Button from "../../component/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function ChangePass() {
   const [user, setUser] = useState(true);
   const [checkPin, setCheckPin] = useState(true);
+  const navigate = useNavigate();
   const [form, setForm] = useState({});
-
+  const api = useApi();
   const [pin, setPin] = useState({
     pin1: "",
     pin2: "",
@@ -47,8 +47,16 @@ export default function ChangePass() {
     for (const item in pin) {
       allPin += pin[item];
     }
-    console.log(allPin);
-    setCheckPin(false);
+    api
+      .post("/user/checkpin", { pin: allPin })
+      .then((res) => {
+        alert(res.data.message);
+        setCheckPin(false);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+        console.log(err.response.data);
+      });
   };
 
   const handleSubmitUpdatePin = (e) => {
@@ -57,6 +65,17 @@ export default function ChangePass() {
     for (const item in pin) {
       allPin += pin[item];
     }
+    api
+      .patch("/user/updatepin", { pin: allPin })
+      .then((res) => {
+        alert(res.data.message);
+        navigate("/profile");
+        setCheckPin(true);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+        console.log(err.response.data);
+      });
   };
 
   console.log(form);

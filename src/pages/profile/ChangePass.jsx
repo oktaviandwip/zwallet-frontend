@@ -2,21 +2,37 @@ import React, { useState, useEffect } from "react";
 
 import MainHeader from "../../component/ProfileHead";
 import Card from "../../component/CardProfile";
-
+import useApi from "../../utils/useApi";
 // import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Header from "../../component/Header";
 import Sidebar from "../../component/Sidebar";
 import Input from "../../component/Input";
 import Button from "../../component/Button";
 
 export default function ChangePass() {
-  const [user, setUser] = useState(true);
   const [form, setForm] = useState({});
-
+  const api = useApi();
+  const navigate = useNavigate();
   //   const user = useSelector((state) => state.user.data);
 
   const handleOnChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    api
+      .patch("/user/updatepass", form)
+      .then((res) => {
+        alert(res.data.message);
+        navigate("/profile");
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+        console.log(err.response.data);
+      });
   };
 
   console.log(form);
@@ -37,12 +53,12 @@ export default function ChangePass() {
           <form
             action=""
             className="w-full sm:w-[431px] mx-auto text-center space-y-8 mt-24"
-            // onSubmit={handleSubmit}
+            onSubmit={submitHandler}
           >
             <div className="grid gap-y-10">
               <Input
                 id={"oldPassword"}
-                name="oldPassword"
+                name="password"
                 type={"Password"}
                 placeholder={"Current Password"}
                 icon={"codicon:lock"}
@@ -51,7 +67,7 @@ export default function ChangePass() {
               />
               <Input
                 id={"newPassword"}
-                name="newPassword"
+                name="newpassword"
                 type={"Password"}
                 placeholder={"New Password"}
                 icon={"codicon:lock"}
@@ -60,7 +76,7 @@ export default function ChangePass() {
               />
               <Input
                 id={"confirmPassword"}
-                name="confirmPassword"
+                name="confirmnewpassword"
                 type={"Password"}
                 placeholder={"Repeat New Password"}
                 icon={"codicon:lock"}

@@ -11,7 +11,7 @@ function useApi(urls = "") {
     // baseURL: import.meta.env.VITE_APP_BASEURL || urls,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExMzcxOTMzLCJleHAiOjE3MTE0NTgzMzN9.72NZq1KmBhP1jJEW_wXlak-LadNnpr4_ObmtYMxdsu8`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNDU5NDU1LCJleHAiOjE3MTE1NDU4NTV9.S819-XOHyZAqHVzXfPcBqR1cvq_q0EIk11mFHQUALJg`,
     },
   });
 
@@ -20,7 +20,7 @@ function useApi(urls = "") {
       ...requests,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExMzcxOTMzLCJleHAiOjE3MTE0NTgzMzN9.72NZq1KmBhP1jJEW_wXlak-LadNnpr4_ObmtYMxdsu8`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNDU5NDU1LCJleHAiOjE3MTE1NDU4NTV9.S819-XOHyZAqHVzXfPcBqR1cvq_q0EIk11mFHQUALJg`,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

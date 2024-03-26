@@ -27,10 +27,10 @@ export default function ChangePass() {
     console.log(data);
 
     api
-      .post("phone", data)
+      .post("/phone", data)
       .then((res) => {
         alert(res.data.message);
-        navigate("/profile/detail");
+        navigate("/profile/manage-phone");
       })
       .catch((err) => {
         alert(err.response.data.message);
