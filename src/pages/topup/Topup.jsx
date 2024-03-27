@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import Header from "../../component/Header";
-import Sidebar from "../../component/Sidebar";
-import Card from "../../component/CardTopup";
-import MainHeader from "../../component/ProfileHead";
+import Header from '../../component/Header';
+import Sidebar from '../../component/Sidebar';
+import Card from '../../component/CardTopup';
+import MainHeader from '../../component/ProfileHead';
 
 function Home() {
   return (
@@ -12,7 +12,7 @@ function Home() {
       <section className=" bg-primary bg-opacity-20 p-12 flex gap-8">
         <Sidebar />
         <main className="bg-white w-full rounded-3xl shadow-lg px-7 pt-7 pb-12">
-          <MainHeader title={"How to Top-Up"} />
+          <MainHeader title={'How to Top-Up'} />
 
           <div className="mt-5 grid gap-y-5">
             <Card

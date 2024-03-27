@@ -1,12 +1,12 @@
-import React from "react";
-import { useState } from "react";
+import React from 'react';
+import { useState } from 'react';
 
 export default function InputPin({ name, value, tabIndex, onChange, onKeyUp }) {
   const [focus, setFocus] = useState(false);
   return (
     <div
       className={`border ${
-        focus ? "border-primary" : "border-[#A9A9A999]"
+        focus ? 'border-primary' : 'border-[#A9A9A999]'
       } bg-white rounded-lg flex justify-center items-center`}
     >
       <input

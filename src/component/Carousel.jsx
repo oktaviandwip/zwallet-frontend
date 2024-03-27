@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import nextCarousel from "../assets/next-carousel.svg";
-import prevCarousel from "../assets/prev-carousel.svg";
+import { useState, useEffect } from 'react';
+import nextCarousel from '../assets/next-carousel.svg';
+import prevCarousel from '../assets/prev-carousel.svg';
 
 const Carousel = ({
   children: slides,
@@ -38,7 +38,7 @@ const Carousel = ({
                 key={i}
                 className={`
               transition-all w-3 h-3 bg-white rounded-full
-              ${curr === i ? "p-2" : "bg-opacity-50"}
+              ${curr === i ? 'p-2' : 'bg-opacity-50'}
             `}
               />
             ))}

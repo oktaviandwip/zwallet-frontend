@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import MainHeader from "../../component/ProfileHead";
-import Card from "../../component/CardProfile";
-import useApi from "../../utils/useApi";
+import MainHeader from '../../component/ProfileHead';
+import Card from '../../component/CardProfile';
+import useApi from '../../utils/useApi';
 // import { useSelector } from "react-redux";
-import Header from "../../component/Header";
-import Sidebar from "../../component/Sidebar";
-import { useNavigate } from "react-router-dom";
+import Header from '../../component/Header';
+import Sidebar from '../../component/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 export default function ChangePass() {
   const [user, setUser] = useState(true);
@@ -15,12 +15,12 @@ export default function ChangePass() {
   const [form, setForm] = useState({});
   const api = useApi();
   const [pin, setPin] = useState({
-    pin1: "",
-    pin2: "",
-    pin3: "",
-    pin4: "",
-    pin5: "",
-    pin6: "",
+    pin1: '',
+    pin2: '',
+    pin3: '',
+    pin4: '',
+    pin5: '',
+    pin6: '',
   });
 
   const handleChange = (e) => {
@@ -28,7 +28,7 @@ export default function ChangePass() {
   };
 
   const inputFocus = (e) => {
-    if (e.key === "Delete" || e.key === "Backspace") {
+    if (e.key === 'Delete' || e.key === 'Backspace') {
       const next = e.target.tabIndex - 2;
       if (next > -1) {
         e.target.form.elements[next].focus();
@@ -43,12 +43,12 @@ export default function ChangePass() {
 
   const handleSubmitConfirmPin = async (e) => {
     e.preventDefault();
-    let allPin = "";
+    let allPin = '';
     for (const item in pin) {
       allPin += pin[item];
     }
     api
-      .post("/user/checkpin", { pin: allPin })
+      .post('/user/checkpin', { pin: allPin })
       .then((res) => {
         alert(res.data.message);
         setCheckPin(false);
@@ -61,15 +61,15 @@ export default function ChangePass() {
 
   const handleSubmitUpdatePin = (e) => {
     e.preventDefault();
-    let allPin = "";
+    let allPin = '';
     for (const item in pin) {
       allPin += pin[item];
     }
     api
-      .patch("/user/updatepin", { pin: allPin })
+      .patch('/user/updatepin', { pin: allPin })
       .then((res) => {
         alert(res.data.message);
-        navigate("/profile");
+        navigate('/profile');
         setCheckPin(true);
       })
       .catch((err) => {
@@ -87,9 +87,9 @@ export default function ChangePass() {
 
         <main className="bg-white w-full rounded-3xl shadow-lg px-7 pt-7 pb-20">
           <MainHeader
-            title={"Change Pin"}
+            title={'Change Pin'}
             content={
-              "You must enter your current password and then type your new password twice."
+              'You must enter your current password and then type your new password twice.'
             }
           />
           {checkPin ? (

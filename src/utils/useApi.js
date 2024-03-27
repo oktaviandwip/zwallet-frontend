@@ -1,9 +1,9 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 function useApi(urls = '') {
-  const { token } = useSelector((s) => s.users)
+  const { token } = useSelector((s) => s.users);
 
   const [requests, setRequests] = useState({
     baseURL: 'http://localhost:3001',
@@ -12,7 +12,7 @@ function useApi(urls = '') {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  })
+  });
 
   useEffect(() => {
     setRequests({
@@ -21,11 +21,11 @@ function useApi(urls = '') {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token])
+  }, [token]);
 
-  return axios.create(requests) // yang dipakai ini
+  return axios.create(requests); // yang dipakai ini
 }
 
-export default useApi
+export default useApi;

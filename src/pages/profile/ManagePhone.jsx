@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Icon } from "@iconify/react";
-import useApi from "../../utils/useApi";
-import { Link } from "react-router-dom";
-import Header from "../../component/Header";
-import Sidebar from "../../component/Sidebar";
-import MainHeader from "../../component/ProfileHead";
+import React, { useState, useEffect } from 'react';
+import { Icon } from '@iconify/react';
+import useApi from '../../utils/useApi';
+import { Link } from 'react-router-dom';
+import Header from '../../component/Header';
+import Sidebar from '../../component/Sidebar';
+import MainHeader from '../../component/ProfileHead';
 
 function Manage() {
   const api = useApi();
@@ -14,7 +14,7 @@ function Manage() {
 
   const getPhone = (e) => {
     api
-      .get("/phone")
+      .get('/phone')
       .then(({ data }) => {
         setPhone(data.data);
       })
@@ -31,7 +31,7 @@ function Manage() {
   const handleDelete = async (phoneId) => {
     console.log(phoneId);
     const confirmed = window.confirm(
-      "Apakah Anda yakin ingin menghapus nomor ini?"
+      'Apakah Anda yakin ingin menghapus nomor ini?'
     );
 
     if (confirmed) {
@@ -65,9 +65,9 @@ function Manage() {
         <Sidebar />
         <main className="bg-white w-full rounded-3xl shadow-lg px-7 pt-7 pb-12">
           <MainHeader
-            title={"Manage Phone"}
+            title={'Manage Phone'}
             content={
-              "You can only delete the phone number and then you must add another phone number."
+              'You can only delete the phone number and then you must add another phone number.'
             }
           />
           {phone ? (
@@ -79,15 +79,15 @@ function Manage() {
                 >
                   <div className=" space-y-2 ">
                     <h3 className="text-[#7A7886] ">
-                      {i == 0 ? "Primary" : "Secondary"}
+                      {i == 0 ? 'Primary' : 'Secondary'}
                     </h3>
                     <p className="text-[#514F5B] font-semibold text-xl">
                       {e.phone_number}
                     </p>
                   </div>
                   <Icon
-                    icon={"iconamoon:trash-simple-thin"}
-                    className={"text-lg"}
+                    icon={'iconamoon:trash-simple-thin'}
+                    className={'text-lg'}
                     onClick={() => handleDelete(e.id)}
                   />
                 </section>
@@ -100,11 +100,11 @@ function Manage() {
                   Phone Not Set
                 </p>
               </div>
-              <Link to={"/profile/add-phone"}>Add Phone</Link>
+              <Link to={'/profile/add-phone'}>Add Phone</Link>
             </section>
           )}
           <Link
-            to={"/profile/add-phone"}
+            to={'/profile/add-phone'}
             className="text-primary cursor-pointer "
           >
             Add Phone

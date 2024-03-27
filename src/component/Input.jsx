@@ -1,7 +1,7 @@
-import React from "react";
-import { Icon } from "@iconify/react";
-import { useState } from "react";
-import { useEffect } from "react";
+import React from 'react';
+import { Icon } from '@iconify/react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Input({
   type,
@@ -18,7 +18,7 @@ export default function Input({
   const [error, setError] = useState(isError);
   const [showPw, sethowPw] = useState(false);
   const showPwHandler = (e) => {
-    console.log("yeay");
+    console.log('yeay');
     sethowPw(!showPw);
   };
   useEffect(() => {
@@ -28,24 +28,24 @@ export default function Input({
   return (
     <div
       className={`relative border-b-[1.5px] ${
-        focus ? "border-primary" : "border-[#A9A9A999]"
-      } ${error ? "border-error" : ""}`}
+        focus ? 'border-primary' : 'border-[#A9A9A999]'
+      } ${error ? 'border-error' : ''}`}
     >
       <Icon
         icon={icon}
         className={`absolute text-2xl top-3 ${
-          focus ? "text-primary" : "text-[#A9A9A999]"
-        } ${error ? "text-error" : ""}`}
+          focus ? 'text-primary' : 'text-[#A9A9A999]'
+        } ${error ? 'text-error' : ''}`}
       />
       <Icon
         icon={icon2}
         onClick={showPwHandler}
         className={`absolute text-2xl right-0 top-3 ${
-          focus ? "text-primary" : "text-[#A9A9A999]"
-        } ${error ? "text-error" : ""}`}
+          focus ? 'text-primary' : 'text-[#A9A9A999]'
+        } ${error ? 'text-error' : ''}`}
       />
       <input
-        type={showPw ? "text" : type}
+        type={showPw ? 'text' : type}
         name={name}
         id={id}
         value={value}

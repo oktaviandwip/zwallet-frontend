@@ -25,11 +25,11 @@ const History = ({
       </div>
       <div
         className={`${
-          user_id === sender_id ? "text-[#FF5B37]" : "text-[#1EC15F]"
+          user_id === sender_id ? 'text-[#FF5B37]' : 'text-[#1EC15F]'
         } font-bold leading-[22px]`}
       >
-        {user_id === sender_id ? "-Rp" : "+Rp"}
-        {amount.toLocaleString("id-ID")}
+        {user_id === sender_id ? '-Rp' : '+Rp'}
+        {amount.toLocaleString('id-ID')}
       </div>
     </div>
   );

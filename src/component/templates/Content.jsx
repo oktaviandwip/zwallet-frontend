@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import Searchinput from '../elements/Search'
-import UserLists from '../elements/UserLists'
-import { Card, CardContent, CardHeader, CardTitle } from '../parts/card'
+import React, { useState } from 'react';
+import Searchinput from '../elements/Search';
+import UserLists from '../elements/UserLists';
+import { Card, CardContent, CardHeader, CardTitle } from '../parts/card';
 
 const avatarDumy = [
   {
@@ -36,30 +36,30 @@ const avatarDumy = [
     picture_url:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
-]
+];
 
 function Content() {
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState('');
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
-    setSearch(value)
-    console.log(search)
-  }
+    setSearch(value);
+    console.log(search);
+  };
 
   return (
-    <Card className='bg-white border-none drop-shadow-md'>
-      <CardHeader className='gap-6 p-[30px]'>
-        <CardTitle className='text-lg font-bold'>Transfer To</CardTitle>
+    <Card className="bg-white border-none drop-shadow-md">
+      <CardHeader className="gap-6 p-[30px]">
+        <CardTitle className="text-lg font-bold">Transfer To</CardTitle>
         <Searchinput onInputChange={handleInputChange} />
       </CardHeader>
-      <CardContent className='flex flex-col gap-5 px-[30px pb-5'>
+      <CardContent className="flex flex-col gap-5 px-[30px pb-5">
         <UserLists />
         <UserLists />
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default Content
+export default Content;

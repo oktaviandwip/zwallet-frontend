@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const profileSlice = createSlice({
   name: 'profile',
@@ -10,7 +10,7 @@ const profileSlice = createSlice({
       return {
         ...state,
         profile: actions.payload,
-      }
+      };
     },
     // logout(state, actions) {
     //   return {
@@ -20,7 +20,7 @@ const profileSlice = createSlice({
     //   };
     // },
   },
-})
+});
 
-export const { getProfile } = profileSlice.actions
-export default profileSlice.reducer
+export const { getProfile } = profileSlice.actions;
+export default profileSlice.reducer;

@@ -1,25 +1,25 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-import Header from "../../component/Header";
-import Sidebar from "../../component/Sidebar";
-import Footer from "../../component/Footer";
-import History from "../../component/History";
+import Header from '../../component/Header';
+import Sidebar from '../../component/Sidebar';
+import Footer from '../../component/Footer';
+import History from '../../component/History';
 
-import backArrow from "../../assets/back-arrow-transaction.svg";
-import incomeIcon from "../../assets/income-icon.svg";
-import expenseIcon from "../../assets/expense-icon.svg";
-import arrowClicked from "../../assets/white-arrow.svg";
+import backArrow from '../../assets/back-arrow-transaction.svg';
+import incomeIcon from '../../assets/income-icon.svg';
+import expenseIcon from '../../assets/expense-icon.svg';
+import arrowClicked from '../../assets/white-arrow.svg';
 
-import { DateRangePicker } from "rsuite";
-import { jwtDecode } from "jwt-decode";
-import useApi from "../../utils/useApi.js";
-import "rsuite/dist/rsuite.min.css";
+import { DateRangePicker } from 'rsuite';
+import { jwtDecode } from 'jwt-decode';
+import useApi from '../../utils/useApi.js';
+import 'rsuite/dist/rsuite.min.css';
 
 const HistoryPage = () => {
   const navigate = useNavigate();
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA";
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA';
   const { id } = jwtDecode(token);
   const api = useApi();
 
@@ -43,8 +43,8 @@ const HistoryPage = () => {
     startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1);
     endOfWeek.setDate(startOfWeek.getDate() + 6);
 
-    const formattedStartDate = startOfWeek.toISOString().split("T")[0];
-    const formattedEndDate = endOfWeek.toISOString().split("T")[0];
+    const formattedStartDate = startOfWeek.toISOString().split('T')[0];
+    const formattedEndDate = endOfWeek.toISOString().split('T')[0];
 
     setWeekRange([formattedStartDate, formattedEndDate]);
   }
@@ -59,7 +59,7 @@ const HistoryPage = () => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      method: "POST",
+      method: 'POST',
       url: `/transaction/history`,
       data: { weekRange },
     })
@@ -86,8 +86,8 @@ const HistoryPage = () => {
       1
     );
 
-    const formattedStartDate = startOfMonth.toISOString().split("T")[0];
-    const formattedEndDate = endOfMonth.toISOString().split("T")[0];
+    const formattedStartDate = startOfMonth.toISOString().split('T')[0];
+    const formattedEndDate = endOfMonth.toISOString().split('T')[0];
 
     setMonthRange([formattedStartDate, formattedEndDate]);
   }
@@ -98,7 +98,7 @@ const HistoryPage = () => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      method: "POST",
+      method: 'POST',
       url: `/transaction/history`,
       data: { monthRange },
     })
@@ -118,7 +118,7 @@ const HistoryPage = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        method: "POST",
+        method: 'POST',
         url: `/transaction/history`,
         data: { weekRange },
       })
@@ -133,7 +133,7 @@ const HistoryPage = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        method: "POST",
+        method: 'POST',
         url: `/transaction/history`,
         data: { monthRange },
       })
@@ -150,14 +150,14 @@ const HistoryPage = () => {
 
   // Get Expense History
   const getExpenseHistory = (period) => {
-    if (period === "weekly") {
+    if (period === 'weekly') {
       api({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        method: "POST",
+        method: 'POST',
         url: `/transaction/history`,
-        data: { weekRange, type: "expense" },
+        data: { weekRange, type: 'expense' },
       })
         .then(({ data }) => {
           setWeekHist(data.data);
@@ -165,14 +165,14 @@ const HistoryPage = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else if (period === "monthly") {
+    } else if (period === 'monthly') {
       api({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        method: "POST",
+        method: 'POST',
         url: `/transaction/history`,
-        data: { monthRange, type: "expense" },
+        data: { monthRange, type: 'expense' },
       })
         .then(({ data }) => {
           setMonthHist(data.data);
@@ -185,14 +185,14 @@ const HistoryPage = () => {
 
   // Get Income History
   const getIncomeHistory = (period) => {
-    if (period === "weekly") {
+    if (period === 'weekly') {
       api({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        method: "POST",
+        method: 'POST',
         url: `/transaction/history`,
-        data: { weekRange, type: "income" },
+        data: { weekRange, type: 'income' },
       })
         .then(({ data }) => {
           setWeekHist(data.data);
@@ -200,14 +200,14 @@ const HistoryPage = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else if (period === "monthly") {
+    } else if (period === 'monthly') {
       api({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        method: "POST",
+        method: 'POST',
         url: `/transaction/history`,
-        data: { monthRange, type: "income" },
+        data: { monthRange, type: 'income' },
       })
         .then(({ data }) => {
           setMonthHist(data.data);
@@ -226,8 +226,8 @@ const HistoryPage = () => {
     startDate.setDate(startDate.getDate());
     endDate.setDate(endDate.getDate());
 
-    const startDateString = startDate.toISOString().split("T")[0];
-    const endDateString = endDate.toISOString().split("T")[0];
+    const startDateString = startDate.toISOString().split('T')[0];
+    const endDateString = endDate.toISOString().split('T')[0];
 
     const dateRange = [startDateString, endDateString];
     setDateRange(dateRange);
@@ -241,7 +241,7 @@ const HistoryPage = () => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      method: "POST",
+      method: 'POST',
       url: `/transaction/history`,
       data: { weekRange },
     })
@@ -256,8 +256,8 @@ const HistoryPage = () => {
   // Format Date Range
   function formatDate(dateString) {
     const date = new Date(dateString);
-    const options = { day: "numeric", month: "short", year: "numeric" };
-    return date.toLocaleDateString("id-ID", options);
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    return date.toLocaleDateString('id-ID', options);
   }
 
   return (
@@ -268,7 +268,7 @@ const HistoryPage = () => {
         <main>
           <button
             className="flex lg:hidden items-center ml-5"
-            onClick={() => navigate("/home")}
+            onClick={() => navigate('/home')}
           >
             <img src={backArrow} alt="back arrow" />
             <div className="text-lg leading-[30px] font-bold text-[#4D4B57] ml-5">
@@ -286,18 +286,18 @@ const HistoryPage = () => {
 
             <div
               className={`${
-                filterDateRange ? "hidden" : "flex"
+                filterDateRange ? 'hidden' : 'flex'
               } text-[#7A7886] leading-[27px] lg:mt-[30px] mb-[25px] `}
             >
               This Week
             </div>
             <div
               className={`${
-                filterDateRange ? "flex" : "hidden"
+                filterDateRange ? 'flex' : 'hidden'
               } text-[#7A7886] leading-[27px] lg:mt-[30px] mb-[25px]`}
             >
               {formatDate(`${dateRange[0]}`) +
-                " - " +
+                ' - ' +
                 formatDate(`${dateRange[1]}`)}
             </div>
 
@@ -319,12 +319,12 @@ const HistoryPage = () => {
                 ))}
             <div
               className={`${
-                filterDateRange ? "hidden" : "flex"
+                filterDateRange ? 'hidden' : 'flex'
               } text-[#7A7886] leading-[27px] mt-[30px] mb-[25px]`}
             >
               This Month
             </div>
-            <div className={`${filterDateRange ? "hidden" : "flex flex-col"}`}>
+            <div className={`${filterDateRange ? 'hidden' : 'flex flex-col'}`}>
               {monthHist &&
                 monthHist
                   .slice(0, 2)
@@ -348,39 +348,39 @@ const HistoryPage = () => {
               <div className="flex">
                 <button
                   className={`${
-                    buttonClicked === "expense" ? "bg-primary" : "bg-white"
+                    buttonClicked === 'expense' ? 'bg-primary' : 'bg-white'
                   } flex justify-center items-center size-[57px] rounded-[12px] shadow-md mr-1 lg:mr-4`}
                   onClick={() => {
                     setFilterDateRange(false);
-                    getExpenseHistory("weekly");
-                    getExpenseHistory("monthly");
-                    handleButtonClick("expense");
+                    getExpenseHistory('weekly');
+                    getExpenseHistory('monthly');
+                    handleButtonClick('expense');
                   }}
                 >
                   <img
                     src={
-                      buttonClicked === "expense" ? arrowClicked : expenseIcon
+                      buttonClicked === 'expense' ? arrowClicked : expenseIcon
                     }
                     alt="expense icon"
                     className={
-                      buttonClicked === "expense" ? "transform rotate-180" : ""
+                      buttonClicked === 'expense' ? 'transform rotate-180' : ''
                     }
                   />
                 </button>
 
                 <button
                   className={`${
-                    buttonClicked === "income" ? "bg-primary" : "bg-white"
+                    buttonClicked === 'income' ? 'bg-primary' : 'bg-white'
                   } flex justify-center items-center size-[57px] rounded-[12px] shadow-md`}
                   onClick={() => {
                     setFilterDateRange(false);
-                    getIncomeHistory("weekly");
-                    getIncomeHistory("monthly");
-                    handleButtonClick("income");
+                    getIncomeHistory('weekly');
+                    getIncomeHistory('monthly');
+                    handleButtonClick('income');
                   }}
                 >
                   <img
-                    src={buttonClicked === "income" ? arrowClicked : incomeIcon}
+                    src={buttonClicked === 'income' ? arrowClicked : incomeIcon}
                     alt="income icon"
                   />
                 </button>
