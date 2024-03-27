@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/landingpage/LandingPage.jsx";
 import Home from "../pages/dashboard/Home.jsx";
+import History from "../pages/dashboard/History.jsx";
 import Topup from "../pages/topup/Topup.jsx";
 import Profile from "../pages/profile/Profile.jsx";
 import Detail from "../pages/profile/Detail.jsx";
@@ -18,9 +19,14 @@ export default createBrowserRouter([
     path: "/",
     element: <LandingPage />,
   },
+
   {
     path: "/home",
     element: <Home />,
+  },
+  {
+    path: "/history",
+    element: <History />,
   },
   {
     path: "/topup",
