@@ -1,16 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
-import { persistStore } from "redux-persist";
-import store from "./store";
-import router from "./utils/router";
-import "./index.css";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux'
+import { RouterProvider } from 'react-router-dom'
+import { persistStore } from 'redux-persist'
+import { PersistGate } from 'redux-persist/integration/react'
+import './index.css'
+import store from './store'
+import router from './utils/router'
 
-const persist = persistStore(store);
+const persist = persistStore(store)
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persist} loading={null}>
@@ -18,4 +18,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </PersistGate>
     </Provider>
   </React.StrictMode>
-);
+)

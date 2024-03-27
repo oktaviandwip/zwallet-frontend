@@ -1,54 +1,53 @@
-import React, { useState, useEffect } from "react";
-import Header from "../../component/Header";
-import Sidebar from "../../component/Sidebar";
-import Footer from "../../component/Footer";
-import History from "../../component/History";
+import React, { useEffect, useState } from 'react'
+import Footer from '../../component/Footer'
+import Header from '../../component/Header'
+import History from '../../component/History'
+import Sidebar from '../../component/Sidebar'
 
-import transferIcon from "../../assets/transfer-icon.svg";
-import transferIconPurple from "../../assets/transfer-icon-purple.svg";
-import topUpIcon from "../../assets/top-up-icon.svg";
-import topUpIconPurple from "../../assets/top-up-icon-purple.svg";
-import incomeIcon from "../../assets/income-icon.svg";
-import expenseIcon from "../../assets/expense-icon.svg";
-import backArrow from "../../assets/back-arrow-transaction.svg";
+import backArrow from '../../assets/back-arrow-transaction.svg'
+import expenseIcon from '../../assets/expense-icon.svg'
+import incomeIcon from '../../assets/income-icon.svg'
+import topUpIconPurple from '../../assets/top-up-icon-purple.svg'
+import topUpIcon from '../../assets/top-up-icon.svg'
+import transferIconPurple from '../../assets/transfer-icon-purple.svg'
+import transferIcon from '../../assets/transfer-icon.svg'
 
-import { Chart } from "chart.js/auto";
-import { Bar } from "react-chartjs-2";
-import ChartDataLabels from "chartjs-plugin-datalabels";
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { Bar } from 'react-chartjs-2'
 
-import { jwtDecode } from "jwt-decode";
-import useApi from "../../utils/useApi.js";
-import { useNavigate } from "react-router";
+import { jwtDecode } from 'jwt-decode'
+import { useNavigate } from 'react-router'
+import useApi from '../../utils/useApi.js'
 
 function Home() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA";
-  const { id } = jwtDecode(token);
-  const api = useApi();
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA'
+  const { id } = jwtDecode(token)
+  const api = useApi()
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [detailTrans, setDetailTrans] = useState(false);
-  const [balance, setBalance] = useState([]);
-  const [dailyBalance, setDailyBalance] = useState([]);
-  const [phone_number, setPhoneNumber] = useState();
-  const [hist, setHist] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [detailTrans, setDetailTrans] = useState(false)
+  const [balance, setBalance] = useState([])
+  const [dailyBalance, setDailyBalance] = useState([])
+  const [phone_number, setPhoneNumber] = useState()
+  const [hist, setHist] = useState([])
 
   // Window Screen
   useEffect(() => {
     const handleResize = () => {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
       if (window.innerWidth > 900) {
-        setDetailTrans(false);
+        setDetailTrans(false)
       }
-    };
+    }
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   // Balance
   useEffect(() => {
@@ -56,30 +55,30 @@ function Home() {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      method: "POST",
+      method: 'POST',
       url: `/transaction/balance`,
       data: {},
     }).then(({ data }) => {
-      setBalance(data.data);
-      setPhoneNumber(data.data[0].phone_number);
-      const dates = getLastSevenDays();
+      setBalance(data.data)
+      setPhoneNumber(data.data[0].phone_number)
+      const dates = getLastSevenDays()
       api({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        method: "POST",
+        method: 'POST',
         url: `/transaction/balance`,
         data: { dates },
       })
         .then(({ data }) => {
-          const balances = data.data.map((item) => parseInt(item.balance));
-          setDailyBalance(balances);
+          const balances = data.data.map((item) => parseInt(item.balance))
+          setDailyBalance(balances)
         })
         .catch((err) => {
-          console.log(err);
-        });
-    });
-  }, []);
+          console.log(err)
+        })
+    })
+  }, [])
 
   // Transaction History
   useEffect(() => {
@@ -87,43 +86,43 @@ function Home() {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      method: "POST",
+      method: 'POST',
       url: `/transaction/history`,
       data: {},
     })
       .then(({ data }) => {
-        setHist(data.data);
+        setHist(data.data)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+        console.log(err)
+      })
+  }, [])
 
   // Get Seven Dates
   function getLastSevenDays() {
-    const dates = [];
-    const today = new Date();
+    const dates = []
+    const today = new Date()
     for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      dates.push(date.toISOString().split("T")[0]);
+      const date = new Date(today)
+      date.setDate(date.getDate() - i)
+      dates.push(date.toISOString().split('T')[0])
     }
-    return dates;
+    return dates
   }
 
   // Get Seven Days
   function getDayNames(dateStrings) {
-    const dayNames = [];
+    const dayNames = []
     dateStrings.forEach((dateString) => {
-      const date = new Date(dateString);
-      const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
-      dayNames.push(dayName);
-    });
-    return dayNames;
+      const date = new Date(dateString)
+      const dayName = date.toLocaleDateString('en-US', { weekday: 'short' })
+      dayNames.push(dayName)
+    })
+    return dayNames
   }
 
   // Chart
-  const [clickedBarIndex, setClickedBarIndex] = useState(null);
+  const [clickedBarIndex, setClickedBarIndex] = useState(null)
 
   const data = {
     labels: getDayNames(getLastSevenDays()),
@@ -131,14 +130,14 @@ function Home() {
       {
         data: dailyBalance,
         backgroundColor: (context) => {
-          return context.dataIndex === clickedBarIndex ? "#6379F4" : "#9DA6B5";
+          return context.dataIndex === clickedBarIndex ? '#6379F4' : '#9DA6B5'
         },
         maxBarThickness: 14,
         borderRadius: 200,
         borderSkipped: false,
       },
     ],
-  };
+  }
 
   const options = {
     layout: {
@@ -157,7 +156,7 @@ function Home() {
         },
         ticks: {
           font: {
-            family: "Nunito Sans",
+            family: 'Nunito Sans',
           },
         },
       },
@@ -170,7 +169,7 @@ function Home() {
         },
         ticks: {
           font: {
-            family: "Nunito Sans",
+            family: 'Nunito Sans',
             size: 14,
             lineHeight: 1.35,
           },
@@ -186,11 +185,11 @@ function Home() {
       },
       datalabels: {
         display: (context) => context.dataIndex === clickedBarIndex,
-        color: "#1EC15F",
-        anchor: "end",
-        align: "top",
+        color: '#1EC15F',
+        anchor: 'end',
+        align: 'top',
         font: {
-          family: "Nunito Sans",
+          family: 'Nunito Sans',
           weight: 700,
         },
         clamp: true,
@@ -203,7 +202,7 @@ function Home() {
           right: 8,
         },
         formatter: (value) => {
-          return `Rp${value.toLocaleString("id-ID")}`;
+          return `Rp${value.toLocaleString('id-ID')}`
         },
       },
     },
@@ -211,96 +210,91 @@ function Home() {
     onClick: (event, chartElements) => {
       if (chartElements.length > 0) {
         if (clickedBarIndex !== chartElements[0].index) {
-          const clickedIndex = chartElements[0].index;
-          setClickedBarIndex(clickedIndex);
+          const clickedIndex = chartElements[0].index
+          setClickedBarIndex(clickedIndex)
         } else {
-          setClickedBarIndex(null);
+          setClickedBarIndex(null)
         }
       } else {
-        setClickedBarIndex(null);
+        setClickedBarIndex(null)
       }
     },
-  };
+  }
 
   return (
-    <div className="bg-[#fafcff] font-nunito">
+    <div className='bg-[#fafcff] font-nunito'>
       <Header />
-      <section className="container flex justify-center my-10">
+      <section className='container flex justify-center my-10'>
         <Sidebar />
         <main>
-          <div className="w-[343px] min-[900px]:w-[700px] min-[1150px]:w-[850px] ml-4 lg:ml-5">
+          <div className='w-[343px] min-[900px]:w-[700px] min-[1150px]:w-[850px] ml-4 lg:ml-5'>
             <div
-              className={`${detailTrans ? "flex" : "hidden"} mb-[52px]`}
-              onClick={() => setDetailTrans(!detailTrans)}
-            >
-              <img src={backArrow} alt="back arrow" />
-              <div className="text-xl leading-[30px] font-bold text-[#4D4B57] ml-5">
+              className={`${detailTrans ? 'flex' : 'hidden'} mb-[52px]`}
+              onClick={() => setDetailTrans(!detailTrans)}>
+              <img src={backArrow} alt='back arrow' />
+              <div className='text-xl leading-[30px] font-bold text-[#4D4B57] ml-5'>
                 Transaction
               </div>
             </div>
 
             {/* Top Section */}
             <div
-              className="w-full h-[141px] min-[900px]:h-[190px] bg-[#6379F4] rounded-[20px] p-[25px] min-[900px]:p-[30px] mb-[5px]"
+              className='w-full h-[141px] min-[900px]:h-[190px] bg-[#6379F4] rounded-[20px] p-[25px] min-[900px]:p-[30px] mb-[5px]'
               onClick={
                 windowWidth >= 900 ? null : () => setDetailTrans(!detailTrans)
-              }
-            >
+              }>
               <div
                 className={`${
-                  detailTrans && windowWidth < 900 ? "hidden" : "flex"
-                } flex-col min-[900px]:flex-row justify-between`}
-              >
+                  detailTrans && windowWidth < 900 ? 'hidden' : 'flex'
+                } flex-col min-[900px]:flex-row justify-between`}>
                 <div>
-                  <div className="text-sm min-[900px]:text-lg text-[#DFDCDC] leading-[19px] min-[900px]:leading-[31px]">
+                  <div className='text-sm min-[900px]:text-lg text-[#DFDCDC] leading-[19px] min-[900px]:leading-[31px]'>
                     Balance
                   </div>
-                  <div className="text-2xl min-[900px]:text-[40px] text-white leading-[33px] min-[900px]:leading-[55px] font-bold mt-[10px] mb-[15px]">
+                  <div className='text-2xl min-[900px]:text-[40px] text-white leading-[33px] min-[900px]:leading-[55px] font-bold mt-[10px] mb-[15px]'>
                     {balance.length >= 2 &&
-                    typeof balance[0].total === "string" &&
-                    typeof balance[1].total === "string"
+                    typeof balance[0].total === 'string' &&
+                    typeof balance[1].total === 'string'
                       ? `Rp${parseInt(
                           balance[0].total - balance[1].total
-                        ).toLocaleString("id-ID")}`
-                      : "Balance data not available"}
+                        ).toLocaleString('id-ID')}`
+                      : 'Balance data not available'}
                   </div>
-                  <div className="text-sm text-[#DFDCDC] leading-[19px] font-semibold">
+                  <div className='text-sm text-[#DFDCDC] leading-[19px] font-semibold'>
                     {phone_number}
                   </div>
                 </div>
 
                 {/* Button */}
-                <div className="w-[343px] min-[900px]:w-[162px] flex flex-row justify-between min-[900px]:flex-col min-[900px]:block mt-[55px] min-[900px]:mt-0 ml-[-25px]">
+                <div className='w-[343px] min-[900px]:w-[162px] flex flex-row justify-between min-[900px]:flex-col min-[900px]:block mt-[55px] min-[900px]:mt-0 ml-[-25px]'>
                   <button
                     className={`flex justify-center items-center w-[162px] h-[57px] ${
                       windowWidth >= 900
-                        ? "bg-white bg-opacity-[20%] text-white"
-                        : "bg-[#EAEDFF] text-[#514F5B]"
-                    } rounded-[10px] border-[1px] border-white border-solid mb-4`}
-                  >
+                        ? 'bg-white bg-opacity-[20%] text-white'
+                        : 'bg-[#EAEDFF] text-[#514F5B]'
+                    } rounded-[10px] border-[1px] border-white border-solid mb-4`}>
                     <img
                       src={
                         windowWidth >= 900 ? transferIcon : transferIconPurple
                       }
-                      alt="transfer icon"
+                      alt='transfer icon'
                     />
-                    <div className="font-bold text-lg leading-[25px] ml-[10px]">
+                    <div className='font-bold text-lg leading-[25px] ml-[10px]'>
                       Transfer
                     </div>
                   </button>
                   <button
                     className={`flex justify-center items-center w-[162px] h-[57px] ${
                       windowWidth >= 900
-                        ? "bg-white bg-opacity-[20%] text-white"
-                        : "bg-[#EAEDFF] text-[#514F5B]"
+                        ? 'bg-white bg-opacity-[20%] text-white'
+                        : 'bg-[#EAEDFF] text-[#514F5B]'
                     } rounded-[10px] border-[1px] border-white border-solid mb-4`}
-                    onClick={() => navigate("/topup")}
-                  >
+                    onClick={() => navigate('/topup')}>
                     <img
                       src={windowWidth >= 900 ? topUpIcon : topUpIconPurple}
-                      alt="top up icon"
+                      alt='top up icon'
                     />
-                    <div className="font-bold text-lg leading-[25px] ml-[10px]">
+                    <div className='font-bold text-lg leading-[25px] ml-[10px]'>
                       Top Up
                     </div>
                   </button>
@@ -310,58 +304,54 @@ function Home() {
 
             <div
               className={`relative flex flex-col min-[900px]:flex-row justify-between min-[900px]:mt-5 ${
-                detailTrans ? "" : "mt-[127px]"
-              }`}
-            >
+                detailTrans ? '' : 'mt-[127px]'
+              }`}>
               <div
                 className={`${
-                  detailTrans ? "flex" : "hidden"
-                } min-[900px]:flex mr-2 lg:mr-5 mb-5 min-[900px]:mb-0`}
-              >
+                  detailTrans ? 'flex' : 'hidden'
+                } min-[900px]:flex mr-2 lg:mr-5 mb-5 min-[900px]:mb-0`}>
                 {/* Income/Expense */}
                 <div
                   className={`w-[343px] min-[1150px]:w-[463px] h-[400px] min-[900px]:h-[468px] rounded-[20px] ${
-                    detailTrans ? "bg-transparent pt-10" : "bg-white shadow-lg"
-                  }`}
-                >
+                    detailTrans ? 'bg-transparent pt-10' : 'bg-white shadow-lg'
+                  }`}>
                   <div
                     className={`${
                       detailTrans
-                        ? "absolute top-[-150px] w-[343px] text-white"
-                        : "flex text-[#6A6A6A]"
-                    } flex justify-between p-[30px]`}
-                  >
+                        ? 'absolute top-[-150px] w-[343px] text-white'
+                        : 'flex text-[#6A6A6A]'
+                    } flex justify-between p-[30px]`}>
                     <div>
-                      <img src={incomeIcon} alt="income icon" />
-                      <div className=" text-sm leading-[19px] mt-[10px] mb-[8px]">
+                      <img src={incomeIcon} alt='income icon' />
+                      <div className=' text-sm leading-[19px] mt-[10px] mb-[8px]'>
                         Income
                       </div>
-                      <div className="text-lg leading-[25px] font-bold">
-                        <div className="text-lg leading-[25px] font-bold">
+                      <div className='text-lg leading-[25px] font-bold'>
+                        <div className='text-lg leading-[25px] font-bold'>
                           {`Rp${parseInt(
                             balance[0] && balance[0].total
-                          ).toLocaleString("id-ID")}`}
+                          ).toLocaleString('id-ID')}`}
                         </div>
                       </div>
                     </div>
-                    <div className="mr-[10px]">
-                      <img src={expenseIcon} alt="expense icon" />
-                      <div className="text-sm leading-[19px] mt-[10px] mb-[8px]">
+                    <div className='mr-[10px]'>
+                      <img src={expenseIcon} alt='expense icon' />
+                      <div className='text-sm leading-[19px] mt-[10px] mb-[8px]'>
                         Expense
                       </div>
                       <div>
-                        <div className="text-lg leading-[25px] font-bold">
+                        <div className='text-lg leading-[25px] font-bold'>
                           {`Rp${parseInt(
                             balance[1] && balance[1].total
-                          ).toLocaleString("id-ID")}`}
+                          ).toLocaleString('id-ID')}`}
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Chart */}
-                  <div className="w-[343px] h-[293px] mx-auto">
-                    <div className="min-[900px]:hidden w-full font-bold text-lg leading-[25px]">
+                  <div className='w-[343px] h-[293px] mx-auto'>
+                    <div className='min-[900px]:hidden w-full font-bold text-lg leading-[25px]'>
                       In this Week
                     </div>
                     <Bar
@@ -375,16 +365,14 @@ function Home() {
 
               {/* Transaction History */}
               <div
-                className={`w-[343px] min-[900px]:w-[367px] h-[469px] rounded-[20px] shadow-lg bg-white px-[30px] pt-[30px] pb-[20px]`}
-              >
-                <div className="w-full flex justify-between items-center mb-[20px]">
-                  <div className="font-bold text-lg leading-[25px]">
+                className={`w-[343px] min-[900px]:w-[367px] h-[469px] rounded-[20px] shadow-lg bg-white px-[30px] pt-[30px] pb-[20px]`}>
+                <div className='w-full flex justify-between items-center mb-[20px]'>
+                  <div className='font-bold text-lg leading-[25px]'>
                     Transaction History
                   </div>
                   <a
-                    href="/history"
-                    className="font-bold text-sm text-[#6379F4]"
-                  >
+                    href='/history'
+                    className='font-bold text-sm text-[#6379F4]'>
                     See all
                   </a>
                 </div>
@@ -411,7 +399,7 @@ function Home() {
       </section>
       <Footer />
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home
