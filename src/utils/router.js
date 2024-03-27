@@ -8,6 +8,10 @@ import ChangePin from "../pages/profile/ChangePin.jsx";
 import ChangePass from "../pages/profile/ChangePass.jsx";
 import AddPhone from "../pages/profile/AddPhone.jsx";
 import ManagePhone from "../pages/profile/ManagePhone.jsx";
+import Login from "../pages/auth/Login.jsx";
+import ResetPassword from "../pages/auth/reset-pasword.jsx";
+import SignUp from "../pages/signup/Signup.jsx";
+import CreatePin from "../pages/create-pin/CreatePin.jsx";
 
 export default createBrowserRouter([
   {
@@ -45,5 +49,21 @@ export default createBrowserRouter([
   {
     path: "/profile/manage-phone",
     element: <ManagePhone />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
+    path: "/create-pin",
+    element: <CreatePin />,
   },
 ]);
