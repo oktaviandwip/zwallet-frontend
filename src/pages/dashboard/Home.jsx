@@ -18,8 +18,10 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 
 import { jwtDecode } from "jwt-decode";
 import useApi from "../../utils/useApi.js";
+import { useNavigate } from "react-router";
 
 function Home() {
+  const navigate = useNavigate();
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA";
   const { id } = jwtDecode(token);
@@ -292,6 +294,7 @@ function Home() {
                         ? "bg-white bg-opacity-[20%] text-white"
                         : "bg-[#EAEDFF] text-[#514F5B]"
                     } rounded-[10px] border-[1px] border-white border-solid mb-4`}
+                    onClick={() => navigate("/topup")}
                   >
                     <img
                       src={windowWidth >= 900 ? topUpIcon : topUpIconPurple}

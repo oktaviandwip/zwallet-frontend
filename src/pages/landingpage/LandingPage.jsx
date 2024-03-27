@@ -130,7 +130,10 @@ function LandingPage() {
               >
                 Login
               </button>
-              <button className="w-[120px] h-[48px] rounded-[12px] bg-white text-lg text-[#6379F4] font-bold leading-[25px] transform active:scale-90 active:opacity-75 hover:bg-opacity-90 transition duration-300">
+              <button
+                className="w-[120px] h-[48px] rounded-[12px] bg-white text-lg text-[#6379F4] font-bold leading-[25px] transform active:scale-90 active:opacity-75 hover:bg-opacity-90 transition duration-300"
+                onClick={() => navigate("/signup")}
+              >
                 Sign up
               </button>
             </div>
