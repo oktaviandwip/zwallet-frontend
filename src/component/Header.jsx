@@ -1,8 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import iconBell from "../assets/icon-bell.png";
+import { useSelector } from "react-redux";
+import defaultProfile from "../assets/profile-default.png";
 
 function Header() {
+  const { profile } = useSelector((s) => s.profile);
+
   const [showBellNotif, setShowBellNotif] = useState(false);
   const showBellNotifHandler = (e) => {
     e.preventDefault();
@@ -19,15 +23,21 @@ function Header() {
             <div className="flex items-center gap-3">
               <img
                 className="h-[48px] w-[48px] rounded-lg"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                src={
+                  profile.image && profile.image
+                    ? profile.image
+                    : defaultProfile
+                }
                 alt=""
               />
               <div>
                 <span className="sm:hidden text-[#3A3D42E5]">Hello,</span>
 
-                <p className="bold">Robert Chandler</p>
+                <p className="bold">
+                  {profile.username ? profile.username : "Your Name"}
+                </p>
                 <span className="hidden sm:block text-[#3A3D42E5]">
-                  +62 8139 3877 7946
+                  {profile.phone ? profile.phone : "Phone Not Set"}
                 </span>
               </div>
             </div>

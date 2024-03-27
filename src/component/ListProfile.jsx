@@ -6,13 +6,13 @@ export default function ListProfile({ content }) {
   const handleNavigate = () => {
     switch (content) {
       case "Personal Information":
-        navigate("/");
+        navigate("/profile/detail");
         break;
       case "Change Password":
-        navigate("/");
+        navigate("/profile/change-pass");
         break;
       case "Change PIN":
-        navigate("/");
+        navigate("/profile/change-pin");
         break;
       //   case "Logout":
       //     axiosClient.post("auth/logout");
@@ -27,13 +27,11 @@ export default function ListProfile({ content }) {
   };
 
   return (
-    <div>
-      <button
-        className="text-[#4D4B57] font-semibold bg-[#E5E8ED] flex justify-between items-center py-5 px-5 rounded-lg  w-[433px]"
-        onClick={handleNavigate}
-      >
-        <p>{content}</p>
-      </button>
-    </div>
+    <button
+      className="text-[#4D4B57] font-semibold bg-[#E5E8ED] flex justify-between items-center py-5 px-5 rounded-lg w-full sm:w-[433px]"
+      onClick={handleNavigate}
+    >
+      <p>{content}</p>
+    </button>
   );
 }

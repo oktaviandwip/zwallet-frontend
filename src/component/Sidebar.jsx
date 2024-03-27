@@ -4,6 +4,7 @@ import transferIcon from "../assets/icon-transfer.png";
 import topupIcon from "../assets/icon-topup.png";
 import profileIcon from "../assets/icon-profile.png";
 import logoutIcon from "../assets/icon-logout.png";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -33,22 +34,24 @@ function Header() {
             </a>
           </li>
           <li>
-            <a
+            <Link
+              to={"/topup"}
               href="#"
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             >
               <img src={topupIcon} alt="" />
               <span className="flex-1 ms-3 whitespace-nowrap">Top Up</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
+              to={"/profile"}
               href="#"
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             >
               <img src={profileIcon} alt="" />
               <span className="flex-1 ms-3 whitespace-nowrap">Profile</span>
-            </a>
+            </Link>
           </li>
         </ul>
         <a
