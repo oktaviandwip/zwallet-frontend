@@ -1,32 +1,31 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-// import { useSelector } from "react-redux";
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
-function useApi(urls = "") {
-  // const { token } = useSelector((s) => s.users);
-  const token = true;
+function useApi(urls = '') {
+  const { token } = useSelector((s) => s.users)
 
   const [requests, setRequests] = useState({
-    baseURL: "http://localhost:3001",
+    baseURL: 'http://localhost:3001',
     // baseURL: import.meta.env.VITE_APP_BASEURL || urls,
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNDU5NDU1LCJleHAiOjE3MTE1NDU4NTV9.S819-XOHyZAqHVzXfPcBqR1cvq_q0EIk11mFHQUALJg`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-  });
+  })
 
   useEffect(() => {
     setRequests({
       ...requests,
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNDU5NDU1LCJleHAiOjE3MTE1NDU4NTV9.S819-XOHyZAqHVzXfPcBqR1cvq_q0EIk11mFHQUALJg`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-    });
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token])
 
-  return axios.create(requests); // yang dipakai ini
+  return axios.create(requests) // yang dipakai ini
 }
 
-export default useApi;
+export default useApi

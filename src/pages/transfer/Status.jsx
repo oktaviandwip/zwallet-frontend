@@ -28,7 +28,7 @@ function Status(props) {
   const { id } = useParams()
   const api = useApi()
 
-  const profile = useSelector((state) => state.profile)
+  const { profile } = useSelector((state) => state.profile)
   const transfer = useSelector((state) => state.transfer)
 
   const [user, setUser] = useState('')

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Searchinput from '../../component/elements/Search'
 import UserLists from '../../component/elements/UserLists'
@@ -10,16 +9,7 @@ import {
   CardTitle,
 } from '../../component/parts/card'
 import Layout from '../../component/templates/layout'
-import { setProfileDetails } from '../../store/reducer/profile'
 import useApi from '../../utils/useApi'
-
-// for development only
-
-const values = {
-  users:
-    '{"isAuth":true,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJuYW1lIjoidXNlcjEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTE0OTUxODksImV4cCI6MTcxMTQ5ODc4OX0.CVEZTK4ee8OzmnKCdMrCDPXP4tz7o2t2XY137Hiiy3o"}',
-  _persist: '{"version":-1,"rehydrated":true}',
-}
 
 function Transfer() {
   const [search, setSearch] = useState('')
@@ -27,50 +17,12 @@ function Transfer() {
   const [users, setUsers] = useState([])
 
   const api = useApi()
-  const dispatch = useDispatch()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
 
     setSearch(value)
   }
-  // for development only
-  useEffect(() => {
-    localStorage.setItem('persist:root', values)
-  }, [])
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        await api
-          .get(`/user`)
-          .then(({ data }) => {
-            const userProfile = data.data[0]
-            const { id, email, username, balance, image, phone, pin } =
-              userProfile
-
-            dispatch(
-              setProfileDetails({
-                id,
-                email,
-                username,
-                balance,
-                image,
-                phone,
-                pin,
-              })
-            )
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-      } catch (error) {
-        console.error('Error fetching user:', error)
-      }
-    }
-
-    fetchUser()
-  }, [])
 
   useEffect(() => {
     const fetchUsers = async () => {

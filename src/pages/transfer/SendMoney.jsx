@@ -20,7 +20,7 @@ function SendMoney(props) {
   const { id } = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const profile = useSelector((state) => state.profile)
+  const { profile } = useSelector((state) => state.profile)
 
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState('')

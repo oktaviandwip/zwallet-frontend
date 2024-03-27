@@ -3,10 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const userSlice = createSlice({
   name: 'users',
   initialState: {
-    isAuth: false,
+    isAuth: true,
     token:
-      '' ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzExNDkxMDE3LCJleHAiOjE3MTE1Nzc0MTd9.l8YLmwT5PVPWR7aRnkKaQsNb2Nq0OSjEbibJ954W0y8',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzExNTgwNzMwLCJleHAiOjE3MTE2NjcxMzB9.LZS3my70ugkTjt6Pibifbrb0PQK3tF8UlCxgnZuZz0I',
   },
   reducers: {
     login(state, actions) {

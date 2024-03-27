@@ -12,19 +12,26 @@ import topUpIcon from '../../assets/top-up-icon.svg'
 import transferIconPurple from '../../assets/transfer-icon-purple.svg'
 import transferIcon from '../../assets/transfer-icon.svg'
 
+import 'chart.js/auto'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-import { Bar } from 'react-chartjs-2'
-
 import { jwtDecode } from 'jwt-decode'
+
+import { Bar } from 'react-chartjs-2'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import NewSidebar from '../../component/NewSidebar.jsx'
+import { getProfile } from '../../store/reducer/profile.js'
 import useApi from '../../utils/useApi.js'
 
 function Home() {
   const navigate = useNavigate()
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA'
+
+  const { token } = useSelector((s) => s.users)
+
   const { id } = jwtDecode(token)
   const api = useApi()
+
+  const dispatch = useDispatch()
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [detailTrans, setDetailTrans] = useState(false)
@@ -32,6 +39,28 @@ function Home() {
   const [dailyBalance, setDailyBalance] = useState([])
   const [phone_number, setPhoneNumber] = useState()
   const [hist, setHist] = useState([])
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  //   get profile user
+
+  const getUser = async (e) => {
+    await api
+      .get('/user')
+      .then(({ data }) => {
+        dispatch(getProfile(data.data[0]))
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  useEffect(() => {
+    getUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  //   end profile user
 
   // Window Screen
   useEffect(() => {
@@ -51,6 +80,7 @@ function Home() {
 
   // Balance
   useEffect(() => {
+    setIsLoading(true)
     api({
       headers: {
         Authorization: `Bearer ${token}`,
@@ -73,8 +103,10 @@ function Home() {
         .then(({ data }) => {
           const balances = data.data.map((item) => parseInt(item.balance))
           setDailyBalance(balances)
+          setIsLoading(false)
         })
         .catch((err) => {
+          setIsLoading(false)
           console.log(err)
         })
     })
@@ -221,6 +253,19 @@ function Home() {
     },
   }
 
+  if (isLoading) {
+    return (
+      <div className='bg-[#fafcff] font-nunito'>
+        <Header />
+        <section className='container flex justify-center my-10'>
+          {/* <Sidebar /> */}
+          <NewSidebar />
+        </section>
+        <Footer />
+      </div>
+    )
+  }
+
   return (
     <div className='bg-[#fafcff] font-nunito'>
       <Header />
@@ -354,6 +399,7 @@ function Home() {
                     <div className='min-[900px]:hidden w-full font-bold text-lg leading-[25px]'>
                       In this Week
                     </div>
+
                     <Bar
                       data={data}
                       options={options}

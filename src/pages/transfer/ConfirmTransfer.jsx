@@ -30,7 +30,7 @@ import useApi from '../../utils/useApi'
 
 function ConfirmTransfer() {
   const { id } = useParams()
-  const profile = useSelector((state) => state.profile)
+  const { profile } = useSelector((state) => state.profile)
   const transfer = useSelector((state) => state.transfer)
   const navigate = useNavigate()
 
