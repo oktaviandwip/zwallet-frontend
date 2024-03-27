@@ -38,10 +38,20 @@ npm install
 yarn install
 ```
 
+2. run prettier
+
+```bash
+npm run format
+# or
+yarn format
+```
+
 3. Run the app
 
 ```bash
 npm run dev
+# or
+yarn dev
 ```
 
 🌟 You are all set!
