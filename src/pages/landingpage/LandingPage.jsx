@@ -10,13 +10,15 @@ import airbnb from "../../assets/airbnb.svg";
 import canon from "../../assets/canon.svg";
 import dell from "../../assets/dell.svg";
 import doublePhone from "../../assets/double-phone.svg";
-import Carousel from "./Carousel";
+import Carousel from "../../component/Carousel";
 import alex from "../../assets/alex.svg";
 import sherina from "../../assets/sherina.svg";
 import jessica from "../../assets/jessica.svg";
 import robert from "../../assets/robert.svg";
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
+  const navigate = useNavigate();
   const advantages = [
     {
       image: support,
@@ -122,7 +124,10 @@ function LandingPage() {
           <div className="flex justify-between">
             <img src={zwalletLogo} alt="zwallet logo" />
             <div>
-              <button className="w-[120px] h-[48px] rounded-[12px] bg-transparent border-2 border-white text-lg text-white font-bold leading-[25px] mr-[30px] transform active:scale-90 active:opacity-75 hover:bg-opacity-90 transition duration-300">
+              <button
+                className="w-[120px] h-[48px] rounded-[12px] bg-transparent border-2 border-white text-lg text-white font-bold leading-[25px] mr-[30px] transform active:scale-90 active:opacity-75 hover:bg-opacity-90 transition duration-300"
+                onClick={() => navigate("/login")}
+              >
                 Login
               </button>
               <button className="w-[120px] h-[48px] rounded-[12px] bg-white text-lg text-[#6379F4] font-bold leading-[25px] transform active:scale-90 active:opacity-75 hover:bg-opacity-90 transition duration-300">

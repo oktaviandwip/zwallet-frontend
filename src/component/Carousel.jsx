@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import nextCarousel from "../../assets/next-carousel.svg";
-import prevCarousel from "../../assets/prev-carousel.svg";
+import nextCarousel from "../assets/next-carousel.svg";
+import prevCarousel from "../assets/prev-carousel.svg";
 
 const Carousel = ({
   children: slides,

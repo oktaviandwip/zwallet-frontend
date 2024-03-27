@@ -19,7 +19,7 @@ import "rsuite/dist/rsuite.min.css";
 const HistoryPage = () => {
   const navigate = useNavigate();
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNDEyNDk5LCJleHAiOjE3MTE0OTg4OTl9.TDIBTKWNI1ANwdxiqGW2eN95Kbrn90qWByfOFn0q4vc";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA";
   const { id } = jwtDecode(token);
   const api = useApi();
 
@@ -261,7 +261,7 @@ const HistoryPage = () => {
   }
 
   return (
-    <div className="bg-[#fafcff]">
+    <div className="bg-[#fafcff] font-nunito">
       <Header />
       <section className="container flex justify-center my-10">
         <Sidebar />

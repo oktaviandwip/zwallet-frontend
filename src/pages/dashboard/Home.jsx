@@ -21,7 +21,7 @@ import useApi from "../../utils/useApi.js";
 
 function Home() {
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNDEyNDk5LCJleHAiOjE3MTE0OTg4OTl9.TDIBTKWNI1ANwdxiqGW2eN95Kbrn90qWByfOFn0q4vc";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA";
   const { id } = jwtDecode(token);
   const api = useApi();
 
@@ -221,7 +221,7 @@ function Home() {
   };
 
   return (
-    <div className="bg-[#fafcff]">
+    <div className="bg-[#fafcff] font-nunito">
       <Header />
       <section className="container flex justify-center my-10">
         <Sidebar />
@@ -380,7 +380,7 @@ function Home() {
                   </div>
                   <a
                     href="/history"
-                    className="font-semibold text-sm text-[#6379F4]"
+                    className="font-bold text-sm text-[#6379F4]"
                   >
                     See all
                   </a>
