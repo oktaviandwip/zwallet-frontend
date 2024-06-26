@@ -1,257 +1,64 @@
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 
-import Header from '../../component/Header';
-import Sidebar from '../../component/Sidebar';
-import Footer from '../../component/Footer';
-import History from '../../component/History';
+import Header from '../../components/elements/Header';
+import Sidebar from '../../components/elements/Sidebar';
+import Footer from '../../components/elements/Footer.jsx';
+import IncompleteProfile from '../../components/elements/IncompleteProfile.jsx';
+import History from '../../components/dashboard/History.jsx';
+import Modal from '../../components/transfer/Modal.jsx';
 
 import backArrow from '../../assets/back-arrow-transaction.svg';
 import incomeIcon from '../../assets/income-icon.svg';
 import expenseIcon from '../../assets/expense-icon.svg';
 import arrowClicked from '../../assets/white-arrow.svg';
+import arrowClickedUp from '../../assets/white-arrow-up.png';
 
-import { DateRangePicker } from 'rsuite';
-import { jwtDecode } from 'jwt-decode';
+import DatePicker from 'react-datepicker';
+import { format } from 'date-fns';
+import 'react-datepicker/dist/react-datepicker.css';
+
 import useApi from '../../utils/useApi.js';
-import 'rsuite/dist/rsuite.min.css';
 
 const HistoryPage = () => {
-  const navigate = useNavigate();
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzExNTAyODk5LCJleHAiOjE3MTE1ODkyOTl9.OFOnVYxaZp2idya1-1hC7BxsO7BS0pBMI-FipJUUJGA';
-  const { id } = jwtDecode(token);
   const api = useApi();
+  const navigate = useNavigate();
+  const { profile } = useSelector((s) => s.user);
 
-  const [weekRange, setWeekRange] = useState([]);
   const [weekHist, setWeekHist] = useState([]);
-
-  const [monthRange, setMonthRange] = useState([]);
   const [monthHist, setMonthHist] = useState([]);
-
-  const [dateRange, setDateRange] = useState([]);
+  const [dateHist, setDateHist] = useState([]);
+  const [buttonClicked, setButtonClicked] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [filterDateRange, setFilterDateRange] = useState(false);
 
-  const [buttonClicked, setButtonClicked] = useState(false);
-
-  // Get Week Range
-  function getWeek() {
-    const currentDate = new Date();
-    const startOfWeek = new Date();
-    const endOfWeek = new Date();
-
-    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-    const formattedStartDate = startOfWeek.toISOString().split('T')[0];
-    const formattedEndDate = endOfWeek.toISOString().split('T')[0];
-
-    setWeekRange([formattedStartDate, formattedEndDate]);
-  }
-
+  // All Transaction History
   useEffect(() => {
-    getWeek();
+    getHistory('all');
   }, []);
 
-  // Transaction History Weekly
-  useEffect(() => {
+  // Income/Expense Transaction History
+  const getHistory = (type) => {
+    setButtonClicked(type);
     api({
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      method: 'POST',
-      url: `/transaction/history`,
-      data: { weekRange },
+      method: 'GET',
+      url: `/transaction/history/${type}`,
     })
       .then(({ data }) => {
-        setWeekHist(data.data);
-        getMonth();
+        if (type.includes('&')) {
+          setDateHist(data.data);
+        }
+        setWeekHist(data.data[0].weekly);
+        setMonthHist(data.data[0].monthly);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(({ response }) => {
+        console.log(response.data);
+        alert(`ERROR: ${response.data.error}`);
       });
-  }, [weekRange]);
-
-  // Get Month Range
-  function getMonth() {
-    const currentDate = new Date();
-    const startOfMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      2
-    );
-    const endOfMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      1
-    );
-
-    const formattedStartDate = startOfMonth.toISOString().split('T')[0];
-    const formattedEndDate = endOfMonth.toISOString().split('T')[0];
-
-    setMonthRange([formattedStartDate, formattedEndDate]);
-  }
-
-  // Transaction History Monthly
-  useEffect(() => {
-    api({
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      method: 'POST',
-      url: `/transaction/history`,
-      data: { monthRange },
-    })
-      .then(({ data }) => {
-        setMonthHist(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [monthRange]);
-
-  // Handle Button Click
-  const handleButtonClick = (button) => {
-    if (buttonClicked === button) {
-      setButtonClicked(false);
-      api({
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: 'POST',
-        url: `/transaction/history`,
-        data: { weekRange },
-      })
-        .then(({ data }) => {
-          setWeekHist(data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      api({
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: 'POST',
-        url: `/transaction/history`,
-        data: { monthRange },
-      })
-        .then(({ data }) => {
-          setMonthHist(data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      setButtonClicked(button);
-    }
   };
-
-  // Get Expense History
-  const getExpenseHistory = (period) => {
-    if (period === 'weekly') {
-      api({
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: 'POST',
-        url: `/transaction/history`,
-        data: { weekRange, type: 'expense' },
-      })
-        .then(({ data }) => {
-          setWeekHist(data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (period === 'monthly') {
-      api({
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: 'POST',
-        url: `/transaction/history`,
-        data: { monthRange, type: 'expense' },
-      })
-        .then(({ data }) => {
-          setMonthHist(data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
-  // Get Income History
-  const getIncomeHistory = (period) => {
-    if (period === 'weekly') {
-      api({
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: 'POST',
-        url: `/transaction/history`,
-        data: { weekRange, type: 'income' },
-      })
-        .then(({ data }) => {
-          setWeekHist(data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (period === 'monthly') {
-      api({
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: 'POST',
-        url: `/transaction/history`,
-        data: { monthRange, type: 'income' },
-      })
-        .then(({ data }) => {
-          setMonthHist(data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
-  // Date Range
-  const handleDateRange = (date) => {
-    const startDate = new Date(date[0]);
-    const endDate = new Date(date[1]);
-
-    startDate.setDate(startDate.getDate());
-    endDate.setDate(endDate.getDate());
-
-    const startDateString = startDate.toISOString().split('T')[0];
-    const endDateString = endDate.toISOString().split('T')[0];
-
-    const dateRange = [startDateString, endDateString];
-    setDateRange(dateRange);
-    setFilterDateRange(true);
-  };
-
-  // Get History by Date Range
-  useEffect(() => {
-    const weekRange = dateRange;
-    api({
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      method: 'POST',
-      url: `/transaction/history`,
-      data: { weekRange },
-    })
-      .then(({ data }) => {
-        setWeekHist(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [dateRange]);
 
   // Format Date Range
   function formatDate(dateString) {
@@ -260,12 +67,27 @@ const HistoryPage = () => {
     return date.toLocaleDateString('id-ID', options);
   }
 
+  // Currency Format
+  const formatCurrency = (value) => {
+    const formattedValue = new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+    return formattedValue;
+  };
+
+  if (!profile.name || !profile.phone_number) {
+    return <IncompleteProfile />;
+  }
+
   return (
     <div className="bg-[#fafcff] font-nunito">
       <Header />
-      <section className="container flex justify-center my-10">
+      <main className="flex justify-center mb-10">
         <Sidebar />
-        <main>
+        <section>
           <button
             className="flex lg:hidden items-center ml-5"
             onClick={() => navigate('/home')}
@@ -276,137 +98,123 @@ const HistoryPage = () => {
             </div>
           </button>
 
-          <div className="bg-white w-[343px] lg:w-[750px] min-[1150px]:w-[850px] ml-4 lg:ml-5 rounded-[20px] shadow-lg px-4 py-[30px] lg:p-[30px] mt-[18px] lg:mt-0">
-            <div
-              className="lg:flex hidden
-            font-bold text-lg leading-[25px]"
-            >
+          <div className="relative bg-white w-[343px] lg:w-[750px] min-[1150px]:w-[850px] min-h-screen ml-4 lg:ml-5 rounded-[20px] shadow-lg px-4 py-[30px] lg:p-[30px] mt-[18px] lg:mt-0">
+            <div className="lg:flex hidden font-bold text-lg leading-[25px]">
               Transaction History
             </div>
 
-            <div
-              className={`${
-                filterDateRange ? 'hidden' : 'flex'
-              } text-[#7A7886] leading-[27px] lg:mt-[30px] mb-[25px] `}
-            >
-              This Week
-            </div>
-            <div
-              className={`${
-                filterDateRange ? 'flex' : 'hidden'
-              } text-[#7A7886] leading-[27px] lg:mt-[30px] mb-[25px]`}
-            >
-              {formatDate(`${dateRange[0]}`) +
-                ' - ' +
-                formatDate(`${dateRange[1]}`)}
-            </div>
-
-            {weekHist &&
-              weekHist
-                .slice(0, filterDateRange ? 5 : 2)
-                .map((e, i) => (
-                  <History
-                    key={i}
-                    user_id={id}
-                    sender_id={e.sender_id}
-                    sender_image={e.sender_image}
-                    sender_username={e.sender_username}
-                    receiver_image={e.receiver_image}
-                    receiver_username={e.receiver_username}
-                    notes={e.notes}
-                    amount={e.amount}
-                  />
+            {/* History by Date Range */}
+            <div className={filterDateRange ? 'flex-col' : 'hidden'}>
+              <div className="text-[#7A7886] leading-[27px] my-[30px]">
+                {formatDate(`${startDate}`) + ' - ' + formatDate(`${endDate}`)}
+              </div>
+              {dateHist &&
+                dateHist.map((e, i) => (
+                  <History key={i} data={e} formatCurrency={formatCurrency} />
                 ))}
-            <div
-              className={`${
-                filterDateRange ? 'hidden' : 'flex'
-              } text-[#7A7886] leading-[27px] mt-[30px] mb-[25px]`}
-            >
-              This Month
             </div>
-            <div className={`${filterDateRange ? 'hidden' : 'flex flex-col'}`}>
+
+            {/* Weekly & Monthly History */}
+            <div className={filterDateRange ? 'hidden' : 'flex-col'}>
+              <div className="text-[#7A7886] leading-[27px] mt-[30px]">
+                This Week
+              </div>
+              {weekHist &&
+                weekHist.map((e, i) => (
+                  <History key={i} data={e} formatCurrency={formatCurrency} />
+                ))}
+              <div className="text-[#7A7886] leading-[27px] mt-[30px]">
+                This Month
+              </div>
               {monthHist &&
-                monthHist
-                  .slice(0, 2)
-                  .map((e, i) => (
-                    <History
-                      key={i}
-                      user_id={id}
-                      sender_id={e.sender_id}
-                      sender_image={e.sender_image}
-                      sender_username={e.sender_username}
-                      receiver_image={e.receiver_image}
-                      receiver_username={e.receiver_username}
-                      notes={e.notes}
-                      amount={e.amount}
-                    />
-                  ))}
+                monthHist.map((e, i) => (
+                  <History key={i} data={e} formatCurrency={formatCurrency} />
+                ))}
             </div>
 
+            {/* Expense/Income */}
             <div className="flex w-full justify-between mt-10">
-              {/* Expense/Income */}
-              <div className="flex">
-                <button
-                  className={`${
-                    buttonClicked === 'expense' ? 'bg-primary' : 'bg-white'
-                  } flex justify-center items-center size-[57px] rounded-[12px] shadow-md mr-1 lg:mr-4`}
-                  onClick={() => {
-                    setFilterDateRange(false);
-                    getExpenseHistory('weekly');
-                    getExpenseHistory('monthly');
-                    handleButtonClick('expense');
-                  }}
-                >
-                  <img
-                    src={
-                      buttonClicked === 'expense' ? arrowClicked : expenseIcon
-                    }
-                    alt="expense icon"
-                    className={
-                      buttonClicked === 'expense' ? 'transform rotate-180' : ''
-                    }
-                  />
-                </button>
-
-                <button
-                  className={`${
-                    buttonClicked === 'income' ? 'bg-primary' : 'bg-white'
-                  } flex justify-center items-center size-[57px] rounded-[12px] shadow-md`}
-                  onClick={() => {
-                    setFilterDateRange(false);
-                    getIncomeHistory('weekly');
-                    getIncomeHistory('monthly');
-                    handleButtonClick('income');
-                  }}
-                >
-                  <img
-                    src={buttonClicked === 'income' ? arrowClicked : incomeIcon}
-                    alt="income icon"
-                  />
-                </button>
+              <div className="absolute left-4 bottom-10 flex">
+                {['expense', 'income'].map((type) => (
+                  <button
+                    key={type}
+                    className={`${
+                      buttonClicked === type ? 'bg-primary' : 'bg-white'
+                    } flex justify-center items-center size-[57px] rounded-[12px] shadow-md ${
+                      type === 'expense' ? 'mr-1 lg:mr-4' : ''
+                    }`}
+                    onClick={() => {
+                      getHistory(buttonClicked === type ? 'all' : type);
+                      setButtonClicked(buttonClicked === type ? '' : type);
+                      setFilterDateRange(false);
+                    }}
+                  >
+                    <img
+                      className="size-[30px]"
+                      src={
+                        buttonClicked === type && type === 'expense'
+                          ? arrowClickedUp
+                          : buttonClicked === type && type === 'income'
+                            ? arrowClicked
+                            : type === 'expense'
+                              ? expenseIcon
+                              : incomeIcon
+                      }
+                      alt={`${type} icon`}
+                    />
+                  </button>
+                ))}
               </div>
 
               {/* Filter by Date */}
-              <button className="relative w-[189px] h-[57px] rounded-[12px] shadow-md text-lg text-[#6379F4] leading-[25px] font-bold">
-                <div className="absolute top-4 left-10">Filter by Date</div>
-                <div className="opacity-0">
-                  <DateRangePicker
-                    showOneCalendar
-                    format="dd/MM/yyyy"
-                    onChange={(date) => {
-                      handleDateRange(date);
-                      setButtonClicked(false);
-                    }}
-                    placement="topEnd"
-                    showHeader={false}
-                    size="lg"
-                  />
-                </div>
+              <button
+                className="absolute right-4 bottom-10 w-[189px] h-[57px] rounded-[12px] shadow-md text-lg text-[#6379F4] leading-[25px] font-bold"
+                onClick={() => setIsModalOpen(!isModalOpen)}
+              >
+                Filter by Date
               </button>
+
+              <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(!isModalOpen)}
+              >
+                <div className="flex flex-col items-center w-[242px] mx-auto">
+                  <h2 className="text-lg font-bold mb-2">Select Date Range</h2>
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(dates) => {
+                      const [start, end] = dates;
+                      setStartDate(start);
+                      setEndDate(end);
+                    }}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectsRange
+                    inline
+                  />
+                  <button
+                    className="mt-3 px-[98px] py-3 bg-primary text-white font-bold tracking-wider rounded-lg"
+                    onClick={() => {
+                      if (startDate && endDate) {
+                        const formattedStartDate = format(
+                          startDate,
+                          'yyyy-MM-dd'
+                        );
+                        const formattedEndDate = format(endDate, 'yyyy-MM-dd');
+                        getHistory(`${formattedStartDate}&${formattedEndDate}`);
+                      }
+                      setIsModalOpen(false);
+                      setFilterDateRange(true);
+                    }}
+                  >
+                    Apply
+                  </button>
+                </div>
+              </Modal>
             </div>
           </div>
-        </main>
-      </section>
+        </section>
+      </main>
       <Footer />
     </div>
   );

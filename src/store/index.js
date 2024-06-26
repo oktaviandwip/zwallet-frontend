@@ -10,10 +10,9 @@ import {
   persistReducer,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import profileReducer from './reducer/profile';
+import authReducer from './reducer/auth';
 import transferReducer from './reducer/transfer';
 import userReducer from './reducer/user';
-// import paginationReducer from "./reducer/pagination";
 
 const persistConfig = {
   key: 'root',
@@ -21,10 +20,9 @@ const persistConfig = {
 };
 
 const reducers = combineReducers({
-  users: userReducer,
+  auth: authReducer,
   transfer: transferReducer,
-  profile: profileReducer,
-  // pagination: paginationReducer,
+  user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

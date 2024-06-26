@@ -1,103 +1,80 @@
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from '@iconify/react';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import defaultProfile from '../../assets/profile-default.png';
-import Header from '../../component/Header';
-import ListProfile from '../../component/ListProfile';
-import Sidebar from '../../component/Sidebar';
+import { getProfile } from '../../store/reducer/user.js';
+import ListProfile from '../../components/profile/ListProfile';
+import IncompleteProfile from '../../components/elements/IncompleteProfile.jsx';
+import Header from '../../components/elements/Header';
+import Sidebar from '../../components/elements/Sidebar';
+import Footer from '../../components/elements/Footer';
 import useApi from '../../utils/useApi';
 
-function Home() {
+function Profile() {
   const api = useApi();
-  const { profile } = useSelector((s) => s.profile);
+  const dispatch = useDispatch();
+  const { profile } = useSelector((s) => s.user);
 
-  // start update image
+  // Update Photo Profile
+  const submitPhoto = (e) => {
+    if (e.target.files.length === 0) {
+      return;
+    }
 
-  const [userDataImage, setUserDataImage] = useState(null);
-
-  const changeInputImgHandler = async (e) => {
-    setUserDataImage(e.target.files[0]);
-  };
-  const submitImg = () => {
+    const newProfile = { ...profile, [e.target.name]: e.target.files[0] };
     const formData = new FormData();
-    formData.append('image', userDataImage);
+    for (const key in newProfile) {
+      formData.append(key, newProfile[key]);
+    }
     api({
       method: 'PATCH',
-      url: 'user/image',
+      url: 'user/photo-profile',
       headers: { 'Content-Type': 'multipart/form-data' },
       data: formData,
     })
-      .then((res) => {
-        alert(res.data.message);
-
-        window.location.reload();
+      .then(({ data }) => {
+        dispatch(getProfile(data.rows[0]));
+        alert('Photo profile updated!');
       })
-      .catch((err) => {
-        alert(err.message);
-        console.log(err);
+      .catch(({ response }) => {
+        console.log(response.data);
+        alert(response.data.error);
       });
   };
-  console.log(userDataImage);
-  // end update image
+
+  if (!profile.name || !profile.phone_number) {
+    return <IncompleteProfile />;
+  }
 
   return (
-    <div className="">
-      <Header />
-      <section className=" bg-primary bg-opacity-20 p-12 flex gap-8">
+    <div>
+      <Header profile={profile} />
+      <section className="flex justify-center md:justify-between md:w-[760px] xl:w-[1140px] mx-auto mb-10">
         <Sidebar />
-        <main className="container bg-white w-full rounded-3xl shadow-lg px-7 pt-12 pb-16">
-          <div className="flex flex-col items-center  text-center ">
-            <div className="rounded-lg mx-auto mb-3 overflow-hidden">
-              <img
-                src={
-                  profile.image && profile.image
-                    ? profile.image
-                    : defaultProfile
-                }
-                className="w-[80px] h-[80px] object-cover object-center"
-              />
-            </div>
-
-            <div className="flex gap-x-2 items-center text-[#7A7886]">
-              {!userDataImage ? (
-                <label
-                  htmlFor="formFile"
-                  className="block px-4 py-2  cursor-pointer text-sm text-gray-700"
-                >
-                  <div className="flex gap-x-2">
-                    <Icon icon={'prime:pencil'} className={'text-lg'} />
-                    <span>Edit</span>
-                  </div>
-                </label>
-              ) : (
-                ''
-              )}
-              {userDataImage ? (
-                <p className="cursor-pointer" onClick={submitImg}>
-                  Save
-                </p>
-              ) : (
-                ''
-              )}
+        <main className="bg-white w-[375px] sm:w-[470px] xl:w-[850px] rounded-3xl shadow-lg px-7 pt-12 pb-16">
+          <div className="flex flex-col items-center text-center">
+            <label
+              className="size-[80px] rounded-[10px] bg-cover bg-center bg-no-repeat mx-auto cursor-pointer"
+              style={{
+                backgroundImage: `url(${profile.photo_profile})`,
+              }}
+            >
               <input
-                className="sr-only "
+                className="size-[100px] opacity-0 cursor-pointer"
+                name="photo_profile"
                 type="file"
-                id="formFile"
-                onChange={changeInputImgHandler}
+                onChange={submitPhoto}
               />
-            </div>
-            <h3 className="text-[#4D4B57] font-semibold text-2xl mb-3">
+              <div className="flex gap-x-3 mt-[-8px] cursor-pointer">
+                <Icon icon="prime:pencil" className="text-lg ml-2" />
+                <span>Edit</span>
+              </div>
+            </label>
+            <h3 className="text-[#4D4B57] font-bold text-2xl mt-12 mb-[10px]">
               {profile.username ? profile.username : 'Your Name'}
             </h3>
-
-            {profile.phone ? (
-              <p>{profile.phone.split(', ')[0]}</p>
-            ) : (
-              <Link to={'/profile/add-phone'} className="text-[#7A7886] mb-12">
-                Add Phone
-              </Link>
-            )}
+            <div className="text-[#7A7886] mb-[40px]">
+              {profile.phone_number}
+            </div>
 
             <div className="flex flex-col p-2 items-center gap-y-4 w-full">
               <ListProfile content={'Personal Information'} />
@@ -108,8 +85,9 @@ function Home() {
           </div>
         </main>
       </section>
+      <Footer />
     </div>
   );
 }
 
-export default Home;
+export default Profile;

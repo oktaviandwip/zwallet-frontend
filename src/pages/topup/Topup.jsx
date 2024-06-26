@@ -1,18 +1,26 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import IncompleteProfile from '../../components/elements/IncompleteProfile';
+import Header from '../../components/elements/Header';
+import Sidebar from '../../components/elements/Sidebar';
+import Footer from '../../components/elements/Footer';
+import Card from '../../components/topup/CardTopup';
+import ProfileHeader from '../../components/profile/ProfileHeader';
 
-import Header from '../../component/Header';
-import Sidebar from '../../component/Sidebar';
-import Card from '../../component/CardTopup';
-import MainHeader from '../../component/ProfileHead';
+function Topup() {
+  const { profile } = useSelector((s) => s.user);
 
-function Home() {
+  if (!profile.username || !profile.phone_number) {
+    return <IncompleteProfile />;
+  }
+
   return (
-    <div className="">
-      <Header />
-      <section className=" bg-primary bg-opacity-20 p-12 flex gap-8">
+    <div>
+      <Header profile={profile} />
+      <section className="flex justify-between md:w-[760px] xl:w-[1140px] mx-auto mb-10">
         <Sidebar />
-        <main className="bg-white w-full rounded-3xl shadow-lg px-7 pt-7 pb-12">
-          <MainHeader title={'How to Top-Up'} />
+        <main className="bg-white w-[375px] sm:w-[470px] xl:w-[850px] rounded-3xl shadow-lg px-7 pt-7 pb-12 mx-auto">
+          <ProfileHeader title={'How to Top-Up'} />
 
           <div className="mt-5 grid gap-y-5">
             <Card
@@ -41,8 +49,9 @@ function Home() {
           </div>
         </main>
       </section>
+      <Footer />
     </div>
   );
 }
 
-export default Home;
+export default Topup;

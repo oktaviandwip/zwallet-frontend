@@ -1,10 +1,9 @@
 import React from 'react';
-import imageGroup from '../../assets/images/Group 57.png';
-import iconEmail from '../../assets/icons/mail.svg';
-import iconLock from '../../assets/icons/lock.svg';
-import iconEyeCrossed from '../../assets/icons/eye-crossed.png';
-import iconEye from '../../assets/icons/icon-eye.svg';
-import '../../custom-css/login.css';
+import imageGroup from '../../assets/double-phone.png';
+import iconEmail from '../../assets/mail.svg';
+import iconLock from '../../assets/lock.svg';
+import iconEyeCrossed from '../../assets/eye-crossed.png';
+import iconEye from '../../assets/icon-eye.svg';
 
 function ResetPassword() {
   return (
@@ -71,7 +70,7 @@ function ResetPassword() {
             Confirm
           </button>
         </form>
-        <form className="md:w-[75%] flex hidden flex-col gap-y-5" action="">
+        <form className="md:w-[75%] flex flex-col gap-y-5" action="">
           <p className="hidden md:flex w-[100%] text-[#3A3D4299] text-base leading-loose">
             Now you can create a new password for your Zwallet account. Type
             your password twice so we can confirm your new passsword.

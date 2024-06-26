@@ -1,24 +1,89 @@
-import React from 'react';
-import imageGroup from '../../assets/images/Group 57.png';
-import iconEmail from '../../assets/icons/mail.svg';
-import iconLock from '../../assets/icons/lock.svg';
-import iconEyeCrossed from '../../assets/icons/eye-crossed.png';
-import iconEye from '../../assets/icons/icon-eye.svg';
-import '../../custom-css/login.css';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { login } from '../../store/reducer/auth';
+import { getProfile } from '../../store/reducer/user.js';
+
+import Input from '../../components/profile/Input';
+import imageGroup from '../../assets/double-phone.png';
+import background from '../../assets/background.png';
+import useApi from '../../utils/useApi';
 
 function Login() {
+  const api = useApi();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isAuth } = useSelector((s) => s.auth);
+  const [formData, setFormData] = useState({});
+
+  // Check Login
+  useEffect(() => {
+    if (isAuth) {
+      navigate('/home');
+    }
+  }, [isAuth]);
+
+  // Handle Change
+  const handleChange = (e) => {
+    const data = { ...formData, [e.target.name]: e.target.value };
+    setFormData(data);
+  };
+
+  // Handle Submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    {
+      api({
+        method: 'POST',
+        url: '/auth',
+        data: formData,
+      })
+        .then(({ data }) => {
+          dispatch(getProfile(data.profile));
+          dispatch(login(data.token));
+          alert('Login succesful!');
+        })
+        .catch(({ response }) => {
+          console.log(response.data);
+          alert(`ERROR: ${response.data.error}`);
+        });
+    }
+  };
+
+  // Input Fields
+  const inputs = [
+    {
+      icon: 'mage:email',
+      type: 'email',
+      name: 'email',
+      placeholder: 'Enter your e-mail',
+      autoComplete: 'email',
+    },
+    {
+      icon: 'codicon:lock',
+      type: 'password',
+      name: 'password',
+      placeholder: 'Enter your password',
+    },
+  ];
+
   return (
-    <main className="flex flex-row w-screen overflow-y-hidden font-nunito">
-      <section className="jumbotron w-full md:w-1/2 h-screen flex flex-col px-20 py-12 bg-primary/[0.2] md:bg-hero-side bg-cover bg-no-repeat overflow-y-hidden">
+    <main className="flex flex-row w-screen font-nunito mt-[-180px]">
+      <section
+        className="w-full md:w-1/2 h-[750px] md:h-[900px] lg:h-[800px] xl:h-[700px] px-20 py-12 bg-primary/[0.2] bg-cover bg-no-repeat"
+        style={{ backgroundImage: `url(${background})` }}
+      >
         <a
-          className="self-center md:self-start text-primary md:text-white text-[29px] font-bold"
+          className="flex justify-center md:self-start text-primary md:text-white text-[29px] font-bold"
           href="/"
         >
           Zwallet
         </a>
         <div className="hidden md:block md:pl-16">
           <img
-            className="w-[100%] max-w-[385px] h-auto "
+            className="w-[100%] max-w-[385px]"
             src={imageGroup}
             alt="image hero"
           />
@@ -33,7 +98,7 @@ function Login() {
           coverage.
         </p>
       </section>
-      <section className="absolute top-[25%] md:static md:w-1/2 h-screen flex flex-col rounded-[20px] md:rounded-none gap-y-7 px-5 md:px-12 py-12 bg-white">
+      <section className="absolute inset-0 mx-auto top-[120px] md:static w-[375px] h-[600px] md:w-1/2 flex flex-col rounded-[20px] md:rounded-none gap-y-7 px-5 md:px-12 py-12 bg-white">
         <h2 className="md:hidden self-center text-2xl font-bold text-[#3A3D42]">
           Login
         </h2>
@@ -49,50 +114,37 @@ function Login() {
         <p className="md:hidden w-[100%] text-center text-[#3A3D4299] text-base leading-loose">
           Login to your existing account to access all the features in Zwallet.
         </p>
-        <form className="md:w-[75%] flex flex-col gap-y-5" action="">
-          <div className="flex flex-row border-b-[1.5px] border-[#A9A9A999] py-2 mt-5">
-            <div className="w-[12%] md:w-[8%]">
-              <img src={iconEmail} alt="" />
-            </div>
-            <input
-              className="w-[100%] outline-none"
-              type="mail"
-              name="email"
-              required
-              placeholder="Enter your e-mail"
-              autoComplete="email"
+        <form className="flex flex-col w-[325px] lg:w-[433px] gap-y-[50px]">
+          {inputs.map((field, index) => (
+            <Input
+              key={index}
+              name={field.name}
+              type={field.type}
+              placeholder={field.placeholder}
+              icon={field.icon}
+              icon2={field.name === 'password' ? 'mage:eye-off' : ''}
+              icon3={field.name === 'password' ? 'mage:eye' : ''}
+              onChange={handleChange}
             />
-          </div>
-          <div className="flex flex-row border-b-[1.5px] border-[#A9A9A999] py-2 mt-5">
-            <div className="w-[12%] md:w-[8%]">
-              <img src={iconLock} alt="" />
-            </div>
-            <input
-              className="w-[100%] outline-none"
-              type="password"
-              name="password"
-              id=""
-              placeholder="Enter your password"
-            />
-            <button type="button">
-              <img src={iconEyeCrossed} alt="" />
-            </button>
-          </div>
-          <a className="self-end" href="">
-            Forgot password?
-          </a>
+          ))}
           <button
-            className="bg-[#88888f3f] hover:bg-primary hover:text-white text-[#88888F] rounded-[8px] p-4 mt-10"
-            type="submit"
+            className="bg-primary text-white disabled:text-[#88888F] disabled:bg-[#88888f3f] rounded-[8px] font-bold p-4"
+            onClick={handleSubmit}
+            disabled={!formData.email || !formData.password}
           >
             Login
           </button>
-          <span className="self-center mt-4">
-            Don’t have an account? Let’s{' '}
-            <a className="text-primary" href="">
-              Sign Up
-            </a>
-          </span>
+          <div className="flex justify-center mt-[-20px]">
+            <p>
+              Don’t have an account? Let’s{' '}
+              <span
+                className="text-primary font-bold cursor-pointer"
+                onClick={() => navigate('/signup')}
+              >
+                Sign Up
+              </span>
+            </p>
+          </div>
         </form>
       </section>
     </main>

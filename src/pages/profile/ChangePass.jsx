@@ -1,49 +1,60 @@
 import React, { useState, useEffect } from 'react';
-
-import MainHeader from '../../component/ProfileHead';
-import Card from '../../component/CardProfile';
+import ProfileHeader from '../../components/profile/ProfileHeader';
 import useApi from '../../utils/useApi';
-// import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../component/Header';
-import Sidebar from '../../component/Sidebar';
-import Input from '../../component/Input';
-import Button from '../../component/Button';
+import Header from '../../components/elements/Header';
+import Sidebar from '../../components/elements/Sidebar';
+import Footer from '../../components/elements/Footer';
+import Input from '../../components/profile/Input';
+import { getProfile } from '../../store/reducer/user.js';
 
 export default function ChangePass() {
-  const [form, setForm] = useState({});
   const api = useApi();
   const navigate = useNavigate();
-  //   const user = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
+  const { profile } = useSelector((s) => s.user);
+  const [formData, setFormData] = useState({ email: profile.email });
 
-  const handleOnChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  // Handle Change
+  const handleChange = (e) => {
+    const data = { ...formData, [e.target.name]: e.target.value };
+    setFormData(data);
   };
 
-  const submitHandler = (e) => {
+  // Handle Submit
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    api
-      .patch('/user/updatepass', form)
-      .then((res) => {
-        alert(res.data.message);
-        navigate('/profile');
+    if (formData.newpassword !== formData.confirmnewpassword) {
+      return alert('New password confirmation fail!');
+    }
+    {
+      api({
+        method: 'PATCH',
+        url: '/user/updatepass',
+        data: formData,
       })
-      .catch((err) => {
-        alert(err.response.data.message);
-        console.log(err.response.data);
-      });
+        .then(({ data }) => {
+          console.log(data.data);
+          dispatch(getProfile({ ...profile, password: data.data }));
+          alert('Password updated successfully!');
+          navigate('/home');
+        })
+        .catch(({ response }) => {
+          console.log(response.data);
+          alert(`ERROR: ${response.data.error}`);
+        });
+    }
   };
 
-  console.log(form);
   return (
-    <div className="">
-      <Header />
-      <section className=" bg-primary bg-opacity-20 p-12 flex gap-8">
+    <div>
+      <Header profile={profile} />
+      <section className="flex justify-between w-[1140px] mx-auto mb-10">
         <Sidebar />
 
-        <main className="bg-white w-full rounded-3xl shadow-lg px-7 pt-7 pb-20">
-          <MainHeader
+        <div className="relative bg-white w-[850px] h-[678px] rounded-3xl shadow-lg px-7 pt-7 pb-12">
+          <ProfileHeader
             title={'Change Password'}
             content={
               'You must enter your current password and then type your new password twice.'
@@ -51,9 +62,8 @@ export default function ChangePass() {
           />
 
           <form
-            action=""
             className="w-full sm:w-[431px] mx-auto text-center space-y-8 mt-24"
-            onSubmit={submitHandler}
+            onSubmit={handleSubmit}
           >
             <div className="grid gap-y-10">
               <Input
@@ -63,7 +73,8 @@ export default function ChangePass() {
                 placeholder={'Current Password'}
                 icon={'codicon:lock'}
                 icon2={'mage:eye-off'}
-                onChange={handleOnChange}
+                icon3={'mage:eye'}
+                onChange={handleChange}
               />
               <Input
                 id={'newPassword'}
@@ -72,7 +83,8 @@ export default function ChangePass() {
                 placeholder={'New Password'}
                 icon={'codicon:lock'}
                 icon2={'mage:eye-off'}
-                onChange={handleOnChange}
+                icon3={'mage:eye'}
+                onChange={handleChange}
               />
               <Input
                 id={'confirmPassword'}
@@ -81,17 +93,25 @@ export default function ChangePass() {
                 placeholder={'Repeat New Password'}
                 icon={'codicon:lock'}
                 icon2={'mage:eye-off'}
-                onChange={handleOnChange}
+                icon3={'mage:eye'}
+                onChange={handleChange}
               />
             </div>
 
-            <Button
-              content={'Change Password'}
-              disable={Object.keys(form).length > 2 ? false : true}
-            />
+            <button
+              className="w-full bg-primary text-white font-bold rounded-xl py-3 disabled:cursor-not-allowed disabled:text-[#88888F] disabled:bg-[#DADADA]"
+              disabled={
+                !formData.password ||
+                !formData.newpassword ||
+                !formData.confirmnewpassword
+              }
+            >
+              Change Password
+            </button>
           </form>
-        </main>
+        </div>
       </section>
+      <Footer />
     </div>
   );
 }

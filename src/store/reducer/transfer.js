@@ -1,29 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  notes: '',
-  amount: 0,
-  id: null,
-};
-
 const transferSlice = createSlice({
   name: 'transfer',
-  initialState,
+  initialState: {
+    receiver: {},
+    transferDetails: {},
+  },
   reducers: {
-    setTransferDetails(state, action) {
-      const { notes, amount, id } = action.payload;
-      state.notes = notes;
-      state.amount = amount;
-      state.id = id;
+    getReceiver(state, actions) {
+      return {
+        ...state,
+        receiver: actions.payload,
+      };
     },
-    resetTransferDetails(state) {
-      state.notes = '';
-      state.amount = 0;
-      state.id = null;
+
+    getTransferDetails(state, actions) {
+      return {
+        ...state,
+        transferDetails: actions.payload,
+      };
     },
   },
 });
 
-export const { setTransferDetails, resetTransferDetails } =
-  transferSlice.actions;
+export const { getReceiver, getTransferDetails } = transferSlice.actions;
 export default transferSlice.reducer;

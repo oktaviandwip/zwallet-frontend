@@ -8,6 +8,16 @@
     font-family: 'Nunito Sans', sans-serif;
   }
   body {
-    @apply bg-background;
+    @apply pt-[180px] bg-[#FAFCFF] font-nunito;
   }
+}
+
+/* Date Picker CSS */
+.react-datepicker__header {
+  background-color: #6379f4;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: white;
 }

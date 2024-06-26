@@ -1,192 +1,120 @@
-import React, { useState, useEffect } from 'react';
-
-import MainHeader from '../../component/ProfileHead';
-import Card from '../../component/CardProfile';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import ProfileHeader from '../../components/profile/ProfileHeader';
+import Header from '../../components/elements/Header';
+import Sidebar from '../../components/elements/Sidebar';
+import Footer from '../../components/elements/Footer';
 import useApi from '../../utils/useApi';
-// import { useSelector } from "react-redux";
-import Header from '../../component/Header';
-import Sidebar from '../../component/Sidebar';
 import { useNavigate } from 'react-router-dom';
+import { getProfile } from '../../store/reducer/user.js';
 
 export default function ChangePass() {
-  const [user, setUser] = useState(true);
-  const [checkPin, setCheckPin] = useState(true);
-  const navigate = useNavigate();
-  const [form, setForm] = useState({});
   const api = useApi();
-  const [pin, setPin] = useState({
-    pin1: '',
-    pin2: '',
-    pin3: '',
-    pin4: '',
-    pin5: '',
-    pin6: '',
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { profile } = useSelector((s) => s.user);
+  const [checkPin, setCheckPin] = useState(false);
+  const [pin, setPin] = useState(new Array(6).fill(''));
 
-  const handleChange = (e) => {
-    setPin({ ...pin, [e.target.name]: e.target.value });
+  // Handle Input PIN
+  const handleInputPin = (element, index) => {
+    // Make sure the input is a number
+    if (isNaN(element.value)) return;
+
+    setPin([...pin.map((d, i) => (i === index ? element.value : d))]);
+
+    // Focus to the next PIN
+    if (element.nextSibling) {
+      element.nextElementSibling.focus();
+    }
   };
 
-  const inputFocus = (e) => {
-    if (e.key === 'Delete' || e.key === 'Backspace') {
-      const next = e.target.tabIndex - 2;
-      if (next > -1) {
-        e.target.form.elements[next].focus();
-      }
+  // Confirm Pin
+  const confirmPin = (e) => {
+    e.preventDefault();
+    if (pin.join('') === profile.pin) {
+      setPin(new Array(6).fill(''));
+      setCheckPin(true);
     } else {
-      const next = e.target.tabIndex;
-      if (next < 6) {
-        e.target.form.elements[next].focus();
-      }
+      console.log(pin);
+      alert('Incorrect PIN!');
     }
   };
 
-  const handleSubmitConfirmPin = async (e) => {
+  // Update Pin
+  const updatePin = (e) => {
     e.preventDefault();
-    let allPin = '';
-    for (const item in pin) {
-      allPin += pin[item];
-    }
-    api
-      .post('/user/checkpin', { pin: allPin })
-      .then((res) => {
-        alert(res.data.message);
-        setCheckPin(false);
+    {
+      api({
+        method: 'PATCH',
+        url: '/user/updatepin',
+        data: { ...profile, pin: pin.join('') },
       })
-      .catch((err) => {
-        alert(err.response.data.message);
-        console.log(err.response.data);
-      });
+        .then(({ data }) => {
+          dispatch(getProfile({ ...profile, pin: data.data }));
+          alert('Pin update successful!');
+          navigate('/home');
+        })
+        .catch(({ response }) => {
+          console.log(response.data);
+          alert(`ERROR: ${response.data.error}`);
+        });
+    }
   };
 
-  const handleSubmitUpdatePin = (e) => {
-    e.preventDefault();
-    let allPin = '';
-    for (const item in pin) {
-      allPin += pin[item];
-    }
-    api
-      .patch('/user/updatepin', { pin: allPin })
-      .then((res) => {
-        alert(res.data.message);
-        navigate('/profile');
-        setCheckPin(true);
-      })
-      .catch((err) => {
-        alert(err.response.data.message);
-        console.log(err.response.data);
-      });
-  };
-
-  console.log(form);
   return (
-    <div className="">
-      <Header />
-      <section className=" bg-primary bg-opacity-20 p-12 flex gap-8">
+    <div>
+      <Header profile={profile} />
+      <section className=" flex justify-between w-[1140px] mx-auto mb-10">
         <Sidebar />
 
-        <main className="bg-white w-full rounded-3xl shadow-lg px-7 pt-7 pb-20">
-          <MainHeader
+        <main className="relative bg-white w-[850px] h-[678px] rounded-3xl shadow-lg px-7 pt-7 pb-12">
+          <ProfileHeader
             title={'Change Pin'}
             content={
               'You must enter your current password and then type your new password twice.'
             }
           />
-          {checkPin ? (
-            <form
-              action=""
-              className="w-full sm:w-[431px] mx-auto text-center space-y-8 mt-24"
-              onSubmit={handleSubmitConfirmPin}
-            >
-              <div className="flex flex-row justify-between gap-x-2 overflow-x-hidden">
-                {[1, 2, 3, 4, 5, 6].map((i) => {
-                  return (
-                    <input
-                      className=" md:w-[53px] md:h-[65px] w-[47px] h-[58px] text-center  text-[30px] font-bold p-2 border rounded-[10px] outline-none"
-                      type="text"
-                      maxLength={1}
-                      inputMode="numeric"
-                      autoComplete="off"
-                      name={`pin${i}`}
-                      required
-                      key={i}
-                      pattern="\d*"
-                      tabIndex={i}
-                      value={pin[`pin${i}`]}
-                      placeholder="_"
-                      onChange={handleChange}
-                      onKeyUp={inputFocus}
-                    />
-                  );
-                })}
-              </div>
-
+          <form
+            className="w-[100%] md:w-[433px] flex flex-col overflow-x-hidden mx-auto"
+            onSubmit={checkPin ? updatePin : confirmPin}
+          >
+            <div className="flex flex-row justify-between gap-x-1 overflow-x-hidden mt-[100px] mb-[70px]">
+              {pin.map((data, index) => {
+                return (
+                  <input
+                    className="md:w-[53px] md:h-[65px] w-[47px] h-[58px] text-center text-[#3A3D42] text-[30px] font-bold p-2 border border-[#A9A9A999] rounded-[10px] outline-none"
+                    type="text"
+                    maxLength={1}
+                    key={index}
+                    value={data}
+                    placeholder="_"
+                    onChange={(e) => handleInputPin(e.target, index)}
+                    onFocus={(e) => e.target.select()}
+                    required
+                  />
+                );
+              })}
+            </div>
+            {checkPin ? (
               <button
-                className="w-full bg-primary text-white disabled:text-[#88888F] disabled:bg-[#DADADA] rounded-[10px] p-5"
-                type="submit"
-                disabled={
-                  pin.pin1 &&
-                  pin.pin2 &&
-                  pin.pin3 &&
-                  pin.pin4 &&
-                  pin.pin5 &&
-                  pin.pin6
-                    ? false
-                    : true
-                }
-              >
-                Confirm Pin
-              </button>
-            </form>
-          ) : (
-            <form
-              action=""
-              className="w-full sm:w-[431px] mx-auto text-center space-y-8 mt-24"
-              onSubmit={handleSubmitUpdatePin}
-            >
-              <div className="flex flex-row justify-between gap-x-2 overflow-x-hidden">
-                {[1, 2, 3, 4, 5, 6].map((i) => {
-                  return (
-                    <input
-                      className=" md:w-[53px] md:h-[65px] w-[47px] h-[58px] text-center  text-[30px] font-bold p-2 border rounded-[10px] outline-none"
-                      type="text"
-                      maxLength={1}
-                      inputMode="numeric"
-                      autoComplete="off"
-                      name={`pin${i}`}
-                      required
-                      key={i}
-                      pattern="\d*"
-                      tabIndex={i}
-                      value={pin[`pin${i}`]}
-                      placeholder="_"
-                      onChange={handleChange}
-                      onKeyUp={inputFocus}
-                    />
-                  );
-                })}
-              </div>
-
-              <button
-                className="w-full bg-primary text-white disabled:text-[#88888F] disabled:bg-[#DADADA] rounded-[10px] p-5"
-                type="submit"
-                disabled={
-                  pin.pin1 &&
-                  pin.pin2 &&
-                  pin.pin3 &&
-                  pin.pin4 &&
-                  pin.pin5 &&
-                  pin.pin6
-                    ? false
-                    : true
-                }
+                className={`bg-[#6457570D] ${pin.includes('') ? 'bg-[#6457570D] text-[#88888F]' : 'bg-primary text-white'} text-[18px] font-bold  rounded-[10px] p-4`}
+                disabled={pin.includes('')}
               >
                 Change Pin
               </button>
-            </form>
-          )}
+            ) : (
+              <button
+                className={`bg-[#6457570D] ${pin.includes('') ? 'bg-[#6457570D] text-[#88888F]' : 'bg-primary text-white'} text-[18px] font-bold  rounded-[10px] p-4`}
+                disabled={pin.includes('')}
+              >
+                Confirm Pin
+              </button>
+            )}
+          </form>
         </main>
       </section>
+      <Footer />
     </div>
   );
 }

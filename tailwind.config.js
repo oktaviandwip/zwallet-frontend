@@ -5,10 +5,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        nunito: ["Nunito Sans", "sans-serif"],
+        nunito: ['Nunito Sans', 'sans-serif'],
       },
       colors: {
         primary: '#6379F4',
+        gray: '#9DA6B5',
         dark: '#3A3D42',
         error: '#FF5B37',
         success: '#1EC15F',
@@ -25,13 +26,10 @@ export default {
       maxWidth: {
         desktop: '1140px',
       },
-      fontFamily: {
-        'nunito': ['"Nunito Sans"', 'sans-serif']
-      }
     },
     container: {
       center: true,
     },
   },
   plugins: [],
-}
+};

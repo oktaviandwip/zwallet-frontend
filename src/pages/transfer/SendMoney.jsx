@@ -1,157 +1,145 @@
-import { Pen } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import CurrencyInput from 'react-currency-input-field';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import UserLists from '../../component/elements/UserLists';
-import { Button } from '../../component/parts/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '../../component/parts/card';
-import { Input } from '../../component/parts/input';
-import Layout from '../../component/templates/layout';
-import { setTransferDetails } from '../../store/reducer/transfer';
+import { useNavigate } from 'react-router-dom';
+import Header from '../../components/elements/Header';
+import Sidebar from '../../components/elements/Sidebar';
+import Footer from '../../components/elements/Footer';
+import { getProfile } from '../../store/reducer/user';
+import { getTransferDetails } from '../../store/reducer/transfer';
+import ProfileHeader from '../../components/profile/ProfileHeader';
+import Receiver from '../../components/transfer/Receiver.jsx';
+import Input from '../../components/profile/Input.jsx';
 import useApi from '../../utils/useApi';
 
-function SendMoney(props) {
-  const { id } = useParams();
+function SendMoney() {
+  const api = useApi();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { profile } = useSelector((state) => state.profile);
+  const { profile } = useSelector((s) => s.user);
+  const { receiver } = useSelector((s) => s.transfer);
+  const { transferDetails } = useSelector((s) => s.transfer);
+  const [amountLimit, setAmountLimit] = useState(false);
+  const [formData, setFormData] = useState({
+    sender_id: profile.id,
+    receiver_id: receiver.receiver_id,
+    amount: transferDetails.amount || '',
+    notes: transferDetails.notes || '',
+  });
 
-  const [errorMessage, setErrorMessage] = useState('');
-  const [user, setUser] = useState('');
-  const [isInputFocused, setIsInputFocused] = useState(false);
-  const [className, setClassName] = useState('');
-  const [amount, setAmount] = useState('');
-  const [notes, setNotes] = useState('');
-
-  const api = useApi();
-
+  // Get Sender Data
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await api.get(`/user/${id}`);
-        setUser(response.data.user);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    };
-
-    fetchUser();
+    api({
+      method: 'GET',
+      url: `/user/${profile.id}`,
+    })
+      .then(({ data }) => {
+        dispatch(getProfile(data.data[0]));
+      })
+      .catch(({ response }) => {
+        console.log(response.data);
+        alert(`ERROR: ${response.data.error}`);
+      });
   }, []);
 
-  const validateValue = (value) => {
-    if (!value) {
-      setClassName('');
-    } else if (Number.isNaN(Number(value))) {
-      setErrorMessage('Please enter a valid number');
-      setClassName('is-invalid');
+  // Handle Change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'amount') {
+      const rawValue = value.replace(/[^\d]/g, ''); // Remove non-numeric characters
+      if (isNaN(rawValue)) {
+        return;
+      }
+      const numericValue = parseInt(rawValue);
+      setAmountLimit(numericValue > profile.balance);
+
+      const formattedValue = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(numericValue);
+
+      setFormData({
+        ...formData,
+        amount: formattedValue,
+      });
     } else {
-      setClassName('is-valid');
-    }
-    setAmount(value);
-  };
-
-  const handleInputChange = (e) => {
-    setNotes(e.target.value);
-  };
-
-  const handleClickSubmit = async (e) => {
-    e.preventDefault();
-    if (!amount || isNaN(amount)) {
-      setErrorMessage('Please enter a valid amount');
-      return;
-    }
-    try {
-      await dispatch(setTransferDetails({ id, amount, notes }));
-      navigate(`/transfers/${id}/confirm`);
-    } catch (error) {
-      console.error('Error transferring money:', error);
+      setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleInputFocus = () => {
-    setIsInputFocused(true);
-  };
-
-  const handleInputBlur = () => {
-    setIsInputFocused(false);
+  // Handle Submit
+  const handleSubmit = () => {
+    dispatch(getTransferDetails(formData));
+    navigate('/transfers/details');
   };
 
   return (
     <>
-      <Layout>
-        <Card className="bg-white border-none drop-shadow-md rounded-3xl">
-          <CardHeader className="gap-6 p-[30px]">
-            <CardTitle className="text-lg font-bold">Transfer Money</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-10 px-[30px pb-5">
-            <UserLists data={user} />
-            <div className="w-full h-max flex flex-col gap-11 justify-between">
-              <div className="w-full">
-                <p className="text-base text-listSecondary text-left w-1/2">
-                  Type the amount you want to transfer and then press continue
-                  to the next steps.
-                </p>
-              </div>
-              <div className="w-full ">
-                <div className="inline-flex flex-col gap-3 items-center justify-center w-full">
-                  <CurrencyInput
-                    id="validation-example-2-field"
-                    placeholder="0.00"
-                    allowDecimals={false}
-                    className={`flex  mx-auto w-full text-center rounded-md border-none bg-transparent py-5 px-8 text-[42px] text-primary font-bold placeholder:text-secondary disabled:cursor-not-allowed focus:outline-none focus:ring-0 disabled:opacity-50 ${className}`}
-                    onValueChange={validateValue}
-                    prefix={'Rp'}
-                    intlConfig={{
-                      locale: 'id-ID',
-                      currency: 'IDR',
-                    }}
-                    step={10}
-                    value={amount}
-                  />
-                  <div className="invalid-feedback">{errorMessage}</div>
+      <Header profile={profile} />
+      <section className="flex justify-between md:w-[760px] xl:w-[1140px] mx-auto mb-10">
+        <Sidebar />
+        <main className="relative bg-white w-[375px] sm:w-[470px] xl:w-[850px] h-[737px] rounded-3xl shadow-lg px-7 pt-12 pb-16 mx-auto">
+          <ProfileHeader title={'Transfer Money'} />
+          <Receiver receiver={receiver} />
 
-                  <p className="text-base text-dark text-center font-bold">
-                    Rp{profile.balance} Available
-                  </p>
+          {/* Transfer Input */}
+          <div className="text-[#7A7886] mt-10 w-[336px] leading-[28px]">
+            Type the amount you want to transfer and then press continue to the
+            next steps.
+          </div>
+          <div className="flex flex-col items-center">
+            <input
+              name="amount"
+              type="text"
+              value={formData.amount === 'RpNaN' ? '' : formData.amount}
+              placeholder="0.00"
+              className="w-full h-[80px] text-[42px] text-primary text-center font-bold rounded-xl outline-primary mt-[50px]"
+              style={{ caretColor: 'red' }}
+              onChange={(e) => handleChange(e)}
+            />
+            <div className="w-full text-center text-black font-bold mt-[30px]">{`${new Intl.NumberFormat(
+              'id-ID',
+              {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }
+            ).format(profile.balance)} Available`}</div>
 
-                  <div className="relative mt-8 mx-auto w-[40%] *:text-[#A9A9A9] focus:*:text-primary">
-                    <Pen
-                      className={`absolute left-2.5 top-3 h-6 w-6 pencil-icon ${
-                        isInputFocused ? '!text-primary' : ''
-                      }`}
-                    />
-                    <Input
-                      type="text"
-                      name={props.name}
-                      placeholder="Add some notes"
-                      className="pl-10 pr-4 py-3 h-full w-full items-center rounded-none text-base !text-dark font-semibold placeholder:text-dark/40 placeholder:font-normal border-0 border-b-[1.5px] border-b-dark/25 bg-transparent focus:border-b-primary focus:outline-none focus:ring-0"
-                      onChange={handleInputChange}
-                      onFocus={handleInputFocus}
-                      onBlur={handleInputBlur}
-                    />
-                  </div>
-
-                  <div className="w-full inline-flex justify-end mt-12">
-                    <Button
-                      className="rounded-xl"
-                      size="lg"
-                      onClick={handleClickSubmit}
-                    >
-                      Continue
-                    </Button>
-                  </div>
-                </div>
-              </div>
+            {/* Amount Limit */}
+            <div
+              className={`${amountLimit ? 'block mt-[5px]' : 'hidden'} text-red-500 font-semibold`}
+            >
+              Transfer amount exceed the available balance!
             </div>
-          </CardContent>
-        </Card>
-      </Layout>
+
+            {/* Notes */}
+            <div
+              className={`w-[320px] sm:w-[415px] ${amountLimit ? 'mt-[34px]' : 'mt-[60px]'}`}
+            >
+              <Input
+                name={'notes'}
+                type={'text'}
+                value={formData.notes}
+                placeholder={'Add some notes'}
+                icon={'prime:pencil'}
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+          </div>
+          {/* Submit Button */}
+          <button
+            className="absolute bottom-0 right-7 w-[320px] sm:w-[415px] md:w-[170px] h-[57px] bg-primary text-white disabled:text-[#88888F] disabled:bg-[#DADADA] font-bold rounded-xl mb-[40px] mx-auto"
+            disabled={!formData.amount || !formData.notes || amountLimit}
+            onClick={handleSubmit}
+          >
+            Continue
+          </button>
+        </main>
+      </section>
+      <Footer />
     </>
   );
 }
