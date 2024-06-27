@@ -2,11 +2,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-function useApi() {
+function useApi(urls = '') {
   const { token } = useSelector((s) => s.auth);
 
   const [requests, setRequests] = useState({
-    baseURL: 'http://localhost:3001',
+    baseURL: import.meta.env.VITE_APP_BASEURL || urls,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
