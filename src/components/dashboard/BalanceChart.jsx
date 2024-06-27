@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import 'chart.js/auto';
+import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import useApi from '../../utils/useApi.js';
 
 const BalanceChart = ({
   balances,
@@ -10,7 +9,6 @@ const BalanceChart = ({
   clickedBarIndex,
   setClickedBarIndex,
 }) => {
-  const api = useApi();
   const [maxBarThickness, setMaxBarThickness] = useState(14);
   const [labelSize, setLabelSize] = useState(15);
 
@@ -67,9 +65,9 @@ const BalanceChart = ({
   const options = {
     layout: {
       padding: {
-        top: 20,
-        left: 25,
-        right: 25,
+        top: 25,
+        left: 40,
+        right: 40,
       },
     },
     maintainAspectRatio: false,

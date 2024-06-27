@@ -1,3 +1,5 @@
+import photoProfile from '../../assets/photo-profile.png';
+
 const Receiver = ({ receiver }) => {
   return (
     <div className="flex items-center justify-between w-full h-[100px] bg-white rounded-[10px] shadow p-5">
@@ -5,7 +7,7 @@ const Receiver = ({ receiver }) => {
         <div
           className="flex size-[70px] rounded-[10px] bg-cover bg-center bg-no-repeat mr-5"
           style={{
-            backgroundImage: `url(${receiver.photo_profile})`,
+            backgroundImage: `url(${receiver.photo_profile || photoProfile})`,
           }}
         ></div>
         <div>

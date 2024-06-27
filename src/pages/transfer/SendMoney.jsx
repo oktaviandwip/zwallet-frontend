@@ -129,6 +129,7 @@ function SendMoney() {
               />
             </div>
           </div>
+
           {/* Submit Button */}
           <button
             className="absolute bottom-0 right-7 w-[320px] sm:w-[415px] md:w-[170px] h-[57px] bg-primary text-white disabled:text-[#88888F] disabled:bg-[#DADADA] font-bold rounded-xl mb-[40px] mx-auto"

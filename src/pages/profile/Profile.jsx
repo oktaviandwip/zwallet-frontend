@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from '@iconify/react';
 import { getProfile } from '../../store/reducer/user.js';
+
+import photoProfile from '../../assets/photo-profile.png';
 import ListProfile from '../../components/profile/ListProfile';
 import IncompleteProfile from '../../components/elements/IncompleteProfile.jsx';
 import Header from '../../components/elements/Header';
@@ -20,11 +22,30 @@ function Profile() {
       return;
     }
 
-    const newProfile = { ...profile, [e.target.name]: e.target.files[0] };
-    const formData = new FormData();
-    for (const key in newProfile) {
-      formData.append(key, newProfile[key]);
+    // File Handler
+    const file = e.target.files[0];
+    const maxFileSize = 1 * 1024 * 1024;
+
+    if (file.size > maxFileSize) {
+      alert('File size must be under 1 MB!');
+      return;
     }
+
+    const newProfile = { ...profile };
+    newProfile['photo_profile'] = file;
+
+    // Make Form Data
+    const formData = new FormData();
+    formData.append('photo_profile', file);
+
+    // Append Other Fields
+    for (const key in newProfile) {
+      if (key !== 'photo_profile') {
+        formData.append(key, newProfile[key]);
+      }
+    }
+
+    // Send API Request
     api({
       method: 'PATCH',
       url: 'user/photo-profile',
@@ -47,7 +68,7 @@ function Profile() {
 
   return (
     <div>
-      <Header profile={profile} />
+      <Header />
       <section className="flex justify-center md:justify-between md:w-[760px] xl:w-[1140px] mx-auto mb-10">
         <Sidebar />
         <main className="bg-white w-[375px] sm:w-[470px] xl:w-[850px] rounded-3xl shadow-lg px-7 pt-12 pb-16">
@@ -55,7 +76,7 @@ function Profile() {
             <label
               className="size-[80px] rounded-[10px] bg-cover bg-center bg-no-repeat mx-auto cursor-pointer"
               style={{
-                backgroundImage: `url(${profile.photo_profile})`,
+                backgroundImage: `url(${profile.photo_profile || photoProfile})`,
               }}
             >
               <input

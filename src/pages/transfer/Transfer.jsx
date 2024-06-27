@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import useApi from '../../utils/useApi';
+import { Icon } from '@iconify/react';
+
 import IncompleteProfile from '../../components/elements/IncompleteProfile';
 import Header from '../../components/elements/Header';
 import Sidebar from '../../components/elements/Sidebar';
 import Footer from '../../components/elements/Footer';
 import ProfileHeader from '../../components/profile/ProfileHeader';
-import { Icon } from '@iconify/react';
 import ReceiverList from '../../components/transfer/ReceiverList';
+import useApi from '../../utils/useApi';
 
 function Transfer() {
   const api = useApi();
@@ -85,10 +86,10 @@ function Transfer() {
 
   return (
     <>
-      <Header profile={profile} />
+      <Header />
       <section className="flex justify-between md:w-[760px] xl:w-[1140px] mx-auto mb-10">
         <Sidebar />
-        <main className="bg-white w-[375px] sm:w-[470px] xl:w-[850px] rounded-3xl shadow-lg px-7 pt-12 pb-16 mx-auto">
+        <main className="bg-white w-[375px] sm:w-[470px] xl:w-[850px] md:h-[600px] rounded-3xl shadow-lg px-7 pt-12 pb-16 mx-auto">
           <div className="flex justify-between items-center font-bold mb-6">
             <ProfileHeader title={'Search Receiver'} />
             <button

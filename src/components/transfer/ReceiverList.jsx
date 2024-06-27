@@ -3,6 +3,8 @@ import { Icon } from '@iconify/react';
 import { useDispatch } from 'react-redux';
 import { getReceiver, getTransferDetails } from '../../store/reducer/transfer';
 import { useNavigate } from 'react-router-dom';
+
+import photoProfile from '../../assets/photo-profile.png';
 import useApi from '../../utils/useApi.js';
 
 const ReceiverList = ({ receivers, handleDelete }) => {
@@ -36,7 +38,7 @@ const ReceiverList = ({ receivers, handleDelete }) => {
               <div
                 className="flex size-[70px] rounded-[10px] bg-cover bg-center bg-no-repeat mr-5"
                 style={{
-                  backgroundImage: `url(${r.photo_profile})`,
+                  backgroundImage: `url(${r.photo_profile || photoProfile})`,
                 }}
               ></div>
               <div>

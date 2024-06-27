@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import photoProfile from '../../assets/photo-profile.png';
 
 const History = ({ data, formatCurrency }) => {
   const { profile } = useSelector((s) => s.user);
@@ -8,7 +9,7 @@ const History = ({ data, formatCurrency }) => {
         <div
           className="size-[56px] rounded-[10px] bg-cover bg-center bg-no-repeat mx-auto cursor-pointer"
           style={{
-            backgroundImage: `url(${data.receiver_id === profile.id ? data.sender_photo : data.receiver_photo})`,
+            backgroundImage: `url(${data.receiver_id === profile.id ? data.sender_photo || photoProfile : data.receiver_photo || photoProfile})`,
           }}
         ></div>
         <div className="flex flex-col justify-between w-[112px] ml-[15px] my-[3px]">

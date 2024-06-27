@@ -53,6 +53,7 @@ function Home() {
       url: `/transaction/balance`,
     })
       .then(({ data }) => {
+        console.log(data.data);
         setBalances(data.data);
       })
       .catch(({ response }) => {
@@ -191,14 +192,14 @@ function Home() {
                     } flex justify-between text-sm min-[1150px]:text-lg font-bold p-[30px]`}
                   >
                     <div>
-                      <img src={incomeIcon} alt="income icon" />
+                      <img src={incomeIcon} alt="Income icon" />
                       <div className="text-sm font-normal my-[8px]">Income</div>
                       <div>
                         {balances[6] && formatCurrency(balances[6].income)}
                       </div>
                     </div>
                     <div className="mr-[10px]">
-                      <img src={expenseIcon} alt="expense icon" />
+                      <img src={expenseIcon} alt="Expense icon" />
                       <div className="text-sm font-normal my-[8px]">
                         Expense
                       </div>

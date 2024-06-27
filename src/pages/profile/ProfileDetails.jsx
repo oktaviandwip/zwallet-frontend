@@ -49,7 +49,7 @@ function Detail() {
 
   return (
     <div>
-      <Header profile={profile} />
+      <Header />
       <section className="flex justify-between md:w-[760px] xl:w-[1140px] mx-auto mb-10">
         <Sidebar />
         <div className="relative bg-white w-[375px] sm:w-[470px] xl:w-[850px] rounded-3xl shadow-lg px-7 pt-7 pb-12 mx-auto">

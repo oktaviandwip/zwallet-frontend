@@ -186,14 +186,15 @@ function Confirmation() {
           onClose={() => setIsModalOpen(!isModalOpen)}
         >
           <div className="font-bold">Enter PIN to Transfer</div>
-          <div className="text-dark text-opacity-60 w-[302px] mt-5">
+          <div className="text-dark text-opacity-60 w-[302px] my-5">
             Enter your 6 digits PIN for confirmation to continue transferring
             money.
           </div>
           <InputPin pin={pin} setPin={setPin} />
           <button
-            className="absolute right-[35px] w-[170px] h-[57px] bg-primary text-white font-bold rounded-xl tracking-wider"
-            onClick={() => handleSubmit()}
+            className={`absolute inset-x-0 mx-auto w-[170px] h-[57px] bg-primary text-white disabled:text-[#88888F] disabled:bg-[#88888f3f] rounded-[8px] tracking-wider p-4 mt-6`}
+            disabled={pin.includes('')}
+            onClick={handleSubmit}
           >
             Continue
           </button>
