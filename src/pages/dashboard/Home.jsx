@@ -125,7 +125,8 @@ function Home() {
                     Balance
                   </div>
                   <div className="text-2xl min-[900px]:text-[40px] text-white leading-[33px] min-[900px]:leading-[55px] font-bold mt-[10px] mb-[15px]">
-                    {balances[6] && formatCurrency(balances[6].balance)}
+                    {formatCurrency(profile.balance) ||
+                      (balances[6] && formatCurrency(balances[6].balance))}
                   </div>
                   <div className="text-sm text-[#DFDCDC] leading-[19px] font-semibold">
                     {profile.phone_number || '+62'}
@@ -178,8 +179,8 @@ function Home() {
               >
                 {/* Income/Expense */}
                 <div
-                  className={`w-[463px] min-[900px]:w-[320px] min-[1150px]:w-[463px] rounded-[20px] ${
-                    detailTrans ? 'bg-transparent py-10' : 'bg-white shadow-lg'
+                  className={`w-[463px] min-[900px]:w-[320px] min-[1150px]:w-[463px] rounded-[20px] py-10 ${
+                    detailTrans ? 'bg-transparent' : 'bg-white shadow-lg'
                   }`}
                 >
                   <div

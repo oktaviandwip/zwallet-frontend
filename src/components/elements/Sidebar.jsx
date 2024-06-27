@@ -85,7 +85,7 @@ function Sidebar() {
       className={`hidden md:block w-52 md:w-[270px] rounded-3xl drop-shadow-xl transition-transform -translate-x-full sm:translate-x-0`}
     >
       <nav
-        className={`flex flex-col justify-between ${isProfileComplete ? 'h-full' : 'h-screen'} rounded-2xl overflow-y-auto bg-white`}
+        className={`flex flex-col justify-between ${isProfileComplete || location.pathname.startsWith('/profile') ? 'h-full' : 'h-screen'} rounded-2xl overflow-y-auto bg-white`}
       >
         <ul className="font-nunito text-[18px]">
           {sidebarLinks.map((link, i) => (
