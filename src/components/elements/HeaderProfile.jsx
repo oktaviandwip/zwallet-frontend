@@ -8,7 +8,7 @@ import { getProfile } from '../../store/reducer/user.js';
 import { Icon } from '@iconify/react';
 
 import Notification from './Notification.jsx';
-import photoProfile from '../../assets/photo-profile.svg';
+import photoProfile from '../../assets/photo-profile.png';
 import useApi from '../../utils/useApi.js';
 
 const ProfileHeader = ({ menuOpen, focus, setFocus }) => {
