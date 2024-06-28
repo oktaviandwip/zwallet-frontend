@@ -115,7 +115,7 @@ const HistoryPage = () => {
             </div>
 
             {/* Weekly & Monthly History */}
-            <div className={filterDateRange ? 'hidden' : 'flex-col'}>
+            <div className={filterDateRange ? 'hidden' : 'flex-col mb-[100px]'}>
               <div className="text-[#7A7886] leading-[27px] mt-[30px]">
                 This Week
               </div>
@@ -134,7 +134,7 @@ const HistoryPage = () => {
 
             {/* Expense/Income */}
             <div className="flex w-full justify-between mt-10">
-              <div className="absolute left-4 bottom-10 flex">
+              <div className="absolute left-7 bottom-10 flex">
                 {['expense', 'income'].map((type) => (
                   <button
                     key={type}
@@ -168,7 +168,7 @@ const HistoryPage = () => {
 
               {/* Filter by Date */}
               <button
-                className="absolute right-4 bottom-10 w-[189px] h-[57px] rounded-[12px] shadow-md text-lg text-[#6379F4] leading-[25px] font-bold"
+                className="absolute right-7 bottom-10 w-[189px] h-[57px] rounded-[12px] shadow-md text-lg text-[#6379F4] leading-[25px] font-bold"
                 onClick={() => setIsModalOpen(!isModalOpen)}
               >
                 Filter by Date
