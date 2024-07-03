@@ -1,4 +1,4 @@
-## 📝 About
+## 📝 The Project
 
  <p>
    <ul>
