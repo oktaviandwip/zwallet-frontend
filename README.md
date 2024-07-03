@@ -27,7 +27,7 @@
 1. Clone the repository
 
 ```bash
-git clone https://github.com/guslizikri/Zwallet.git
+git clone https://github.com/oktaviandwip/zwallet-frontend/
 ```
 
 2. Install dependencies
@@ -64,20 +64,16 @@ yarn dev
 
 <hr>
 
-## Team
+## 👨‍💻 Team Members
 
-> All Members of ZWallet Team
-
-|                                 <a href="#" target="_blank">**Full-Stack Developer & Team Leader**</a>                                 |                                         <a href="#" target="_blank">**Full-Stack Developer**</a>                                         |                                       <a href="#" target="_blank">**Full-Stack Developer**</a>                                        |                                         <a href="#" target="_blank">**Full-Stack Developer**</a>                                          |
-| :------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
-| [<img src="https://avatars.githubusercontent.com/u/154682211?v=4" alt="avatar" width="96" height="96">](https://github.com/guslizikri) | [<img src="https://avatars.githubusercontent.com/u/139100874?v=4" alt="avatar" width="96" height="96">](https://github.com/oktaviandwip) | [<img src ="https://avatars.githubusercontent.com/u/67546196?v=4" alt="avatar" width="96" height="96">](https://github.com/Roisfaozi) | [<img src="https://avatars.githubusercontent.com/u/63093816?v=4" alt="avatar" width="96" height="96">)](https://github.com/taufikharahap) |
-|                      <a href="https://github.com/guslizikri" target="_blank">`https://github.com/guslizikri`</a>                       |                     <a href="https://github.com/oktaviandwip" target="_blank">`https://github.com/oktaviandwip`</a>                      |                       <a href="https://github.com/Roisfaozi" target="_blank">`https://github.com/Roisfaozi`</a>                       |                     <a href="https://github.com/taufikharahap" target="_blank">`https://github.com/taufikharahap`</a>                     |
-
----
+| **Full-Stack Developer & Team Leader** | **Full-Stack Developer** | **Full-Stack Developer** | **Full-Stack Developer** |
+|:--------------------------------------:|:------------------------:|:------------------------:|:------------------------:|
+| [<img src="https://avatars.githubusercontent.com/u/154682211?v=4" alt="avatar" width="96" height="96">](https://github.com/guslizikri) | [<img src="https://avatars.githubusercontent.com/u/139100874?v=4" alt="avatar" width="96" height="96">](https://github.com/oktaviandwip) | [<img src="https://avatars.githubusercontent.com/u/67546196?v=4" alt="avatar" width="96" height="96">](https://github.com/Roisfaozi) | [<img src="https://avatars.githubusercontent.com/u/63093816?v=4" alt="avatar" width="96" height="96">](https://github.com/taufikharahap) |
+| [Zikri Gusli](https://github.com/guslizikri) | [Oktavian Dwi Putra](https://github.com/oktaviandwip) | [Rois Faozi](https://github.com/Roisfaozi) | [Taufik Harahap](https://github.com/taufikharahap) |
 
 <br/>
 
-## Website Interface
+## 🎨 UI/UX
 
 > <img src="./src/assets/img/ZWallet-app-home.png" width="946px" alt="ZWallet" />
 
