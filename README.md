@@ -5,8 +5,6 @@
      <li><strong>Zwallet</strong> is a digital wallet to transfer money online and solve your banking problem.</li>
    </ul>
  </p>
- 
- </p>
 
 ## 🛠️ Installation Steps
 
