@@ -1,20 +1,30 @@
 ## 📝 About the Project
 
- <p>
-   <ul>
-     <li><strong>Zwallet</strong> is a digital wallet to transfer money online and solve your banking problem.</li>
-   </ul>
- </p>
+**Zwallet** is a digital wallet to transfer money online and solve your banking problem.
+
+## 🚀 Try It by Yourself
+
+To explore the application, follow these steps:
+
+<p><b>1. Visit the Application</b></p>
+
+Click the link to open the application in your browser: [Zwallet](https://zwallet.oktaviandwip.site/)
+
+<p><b>2. Login as Admin</b></p>
+   
+   Use the following credentials to log in:
+   - **Email**: `admin@gmail.com`
+   - **Password**: `admin1234`
 
 ## 🛠️ Installation Steps
 
-1. Clone the repository
+<p><b>1. Clone the repository</b></p>
 
 ```bash
 git clone https://github.com/oktaviandwip/zwallet-frontend/
 ```
 
-2. Install dependencies
+<p><b>2. Install dependencies</b></p>
 
 ```bash
 npm install
@@ -22,7 +32,7 @@ npm install
 yarn install
 ```
 
-3. run prettier
+<p><b>3. run prettier</b></p>
 
 ```bash
 npm run format
@@ -30,7 +40,7 @@ npm run format
 yarn format
 ```
 
-4. Run the app
+<p><b>4. Run the app</b></p>
 
 ```bash
 npm run dev
