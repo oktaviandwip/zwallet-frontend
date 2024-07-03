@@ -1,8 +1,8 @@
-## 📝 The Project
+## 📝 About the Project
 
  <p>
    <ul>
-     <li><strong>ZWallet</strong> is a digital wallet to transfer money online and solve your banking problem.</li>
+     <li><strong>Zwallet</strong> is a digital wallet to transfer money online and solve your banking problem.</li>
    </ul>
  </p>
  
