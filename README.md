@@ -1,24 +1,10 @@
-<h1 align="center">
-  ZWallet
-</h1>
-
-<p align="center"><img src="./src/assets/img/ZWallet-app.png" width="400px" alt="ZWallet" /></p>
-
-<p align="center">
-    <a href="https://www.fazztrack.com/" target="blank">View Demo Project</a>
-    ·
-    <a href="https://github.com/guslizikri/Zwallet/issues" target="blank">Report Bug</a>
-    ·
-    <a href="https://github.com/guslizikri/Zwallet/pulls">Request Feature</a>
-    ·
-</p>
-
-## About The Project
+## 📝 About The Project
 
  <p>
- <strong>ZWallet App</strong> Karena dalam era digital yang semakin berkembang, kegiatan transaksi keuangan tidak lagi terbatas pada metode konvensional seperti transfer antar bank atau pembayaran tunai langsung. 
- Banyak orang mulai mencari cara yang lebih efisien dan mudah untuk mengirim dan menerima uang.
- ZWallet lahir dengan pemahaman akan trend ini, yaitu kebutuhan akan solusi yang praktis dan aman untuk melakukan transfer uang secara online. 
+   <ul>
+     <li><strong>ZWallet</strong> is a digital wallet to transfer money online and solve your banking problem.</li>
+   </ul>
+ </p>
  
  </p>
 
@@ -38,7 +24,7 @@ npm install
 yarn install
 ```
 
-2. run prettier
+3. run prettier
 
 ```bash
 npm run format
@@ -46,7 +32,7 @@ npm run format
 yarn format
 ```
 
-3. Run the app
+4. Run the app
 
 ```bash
 npm run dev
@@ -75,7 +61,7 @@ yarn dev
 
 ## 🎨 UI/UX
 
-> <img src="./src/assets/img/ZWallet-app-home.png" width="946px" alt="ZWallet" />
+<img src="./src/assets/zwallet-dashboard.png" width="946px" alt="ZWallet dashboard" />
 
 <hr>
 <p align="center">
